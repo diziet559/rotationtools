@@ -11,6 +11,8 @@
 - Blessing of Kings - +10% stats
 - Grace of Air Totem (Shaman) - 77 Agi / skilled +88 Agi
 - Ferocious Inspiration (BM Hunter) - +3% phys. damage done
+- Flask of Relentless Assault (consumable, combat+guardian elixir) - 120 AP
+- or: Elixir of Major Agility (35 Agi, 20 Crit Rating) + Swiftness of Zanza or other guardian elixir
 
 
 ## Debuffs
@@ -32,12 +34,13 @@ with GoA totem and GotW: 714 Agi, with BoK 785 Agi (+179 AP, +4.26% crit)
 +5% ranged crit (talent)
 +5% crit (LotP)
 +155 rAP (AotH)
++120 AP (Flask)
 
-Totals: 2136 AP, 36,12% crit (31.12% melee), 2.09% miss
+Totals: 2256 AP, 36,12% crit (31.12% melee), 2.09% miss
 
 Additional 3% crit from Ret Pally, 440 rAP from Hunter's Mark, 3% Hit imp. Faerie Fire
 
-Total: 2576 AP, 39.12% crit (34.12% melee), 0% miss (ranged & melee)
+Total: 2696 AP, 39.12% crit (34.12% melee), 0% miss (ranged & melee)
 (This is without any CDs or procs)
 
 Damage multipliers stack multiplicatively, so we have:
