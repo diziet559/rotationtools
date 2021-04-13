@@ -76,10 +76,8 @@ class rotationplot:
             for ability in abilities.ABILITIES_WITH_CD
         ])
 
-    def calc_dps(self):
-        end_time = self.calc_dur()
-        self.dps = self.total_damage / end_time * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
-        return self.dps
+    def calc_dps(self, duration):
+        return self.total_damage / duration * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
 
     def complete_fig(self):
         self.ax.set_xlim(-0.25, 14)
@@ -90,10 +88,11 @@ class rotationplot:
         labels = list(self.abilities.keys())
         handles = [plt.Rectangle((0,0),1,1, color=self.abilities[label].color) for label in labels]
         plt.legend(handles, labels, bbox_to_anchor=(1.01, 1), loc='upper left')
-        self.calc_dps()
-        rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=self.abilities['auto'].available)
+        duration = self.calc_dur()
+        dps = self.calc_dps(duration)
+        rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=duration)
         plt.annotate(rota,(0.85,0.5), xycoords='axes fraction')
-        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=self.dps,dmg=self.total_damage)
+        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps,dmg=self.total_damage)
         plt.annotate(stats,(0.85,0.3), xycoords='axes fraction')
         plt.annotate(
             abilities.create_breakdown(self.abilities, self.total_damage),
