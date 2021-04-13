@@ -1,5 +1,20 @@
 import matplotlib.pyplot as plt
 
+def shorthand(s):
+    autos = s.count('a')
+    steadies = s.count('s')
+    multis = s.count('m')
+    arcanes = s.count('A')
+    weaves = s.count('w')
+    raptors = s.count('r')
+    out = str(steadies) + ':' + str(autos)
+    if (multis>0) or (arcanes>0):
+        out = out + ':' + str(multis) + ':' + str(arcanes)
+    if (weaves>0) or (raptors>0):
+        out = out + ' ' + str(weaves+raptors) + 'w'
+    return out
+    
+
 class rotationplot:
     # talents - not yet used
     focusedFire = 2
