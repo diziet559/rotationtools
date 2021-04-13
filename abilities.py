@@ -25,7 +25,7 @@ class Ability:
 
     def use(self, current_time):
         if self.first_usage < 0:
-            self.first_usage = current_time
+            self.first_usage = current_time - self.duration
 
         if self.has_availability:
             self.available = current_time + self.cd
