@@ -65,7 +65,6 @@ class rotationplot:
 
         self.ax = 0
 
-
     def recalc(self):
         s = self.rotation_string
         self.clear()
@@ -78,7 +77,6 @@ class rotationplot:
         ])
 
     def calc_dps(self):
-        #end_time = max(self.auto_available, self.multi_available, self.arcane_available, self.melee_available, self.raptor_available)
         end_time = self.calc_dur()
         self.dps = self.total_damage / end_time * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
         return self.dps
@@ -107,7 +105,7 @@ class rotationplot:
     def add_ability(self, ability_name, y1, update_time = True):
         ability = self.abilities[ability_name]
 
-        if ability.available > self.current_time:
+        if ability.has_availability and ability.available > self.current_time:
             self.current_time = ability.available
 
         self.add_concrete_ability(ability, y1, None, update_time)
@@ -133,8 +131,9 @@ class rotationplot:
         self.total_damage = self.total_damage + ability.damage
 
         if (update_time):
-            ability.use(self.current_time)
             self.current_time = self.current_time + ability.duration
+
+        ability.use(self.current_time)
 
     def add_auto(self):
         auto = self.abilities['auto']

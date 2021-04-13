@@ -10,7 +10,7 @@ class Weapon:
 
 
 class AverageRangedDamage:
-    def __init__(self, weapon, ammo, ap, crit, multiplier, haste):
+    def __init__(self, weapon, ammo, ap, crit, haste, multiplier):
         self.weapon = weapon
         self.ammo = ammo
         self.ap = ap
@@ -46,7 +46,7 @@ class AverageRangedDamage:
         return self.weapon.speed
 
 class AverageMeleeDamage:
-    def __init__(self, weapon, ap, crit, multiplier, haste):
+    def __init__(self, weapon, ap, crit, haste, multiplier):
         self.weapon = weapon
         self.ap = ap
         self.crit = crit
