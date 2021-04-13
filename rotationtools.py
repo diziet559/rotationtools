@@ -51,7 +51,10 @@ class rotationplot:
         #plt.annotate('Range haste: '+str(self.haste),(1.01,0.455), xycoords='axes fraction')
         plt.show()
 
-    def add_ability(self, ability, y1, x0 = None, update_time = True):
+    def add_ability(self, ability_name, y1, update_time = True):
+        self.add_concrete_ability(self.abilities[ability_name], y1, None, update_time)
+
+    def add_concrete_ability(self, ability, y1, x0 = None, update_time = True):
         if (x0 is None):
             x0 = self.current_time
 
@@ -71,25 +74,25 @@ class rotationplot:
         if (self.auto_available > self.current_time):
             self.current_time = self.auto_available
         else:
-            self.add_ability(
+            self.add_concrete_ability(
                 abilities.auto_delay(self.current_time - self.auto_available),
                 0.4, self.auto_available, False
             )
 
-        self.add_ability(self.abilities['auto'], self.row0['Auto'])
+        self.add_ability('auto', self.row0['Auto'])
         self.auto_available = self.current_time + (self.ranged.speed()-0.5)/self.haste
 
     def add_gcd_ability(self, ability_name):
         if (self.gcd_available > self.current_time):
             self.current_time = self.gcd_available
 
-        self.add_ability(self.abilities['gcd'], self.row0['GCD'], None, False)
+        self.add_ability('gcd', self.row0['GCD'], False)
         self.gcd_available = self.current_time + abilities.GCD_DURATION
 
-        self.add_ability(self.abilities[ability_name], self.row0['Cast'])
+        self.add_ability(ability_name, self.row0['Cast'])
 
     def add_raptor(self):
-        self.add_ability(self.abilities['raptor'], self.row0['Cast'])
+        self.add_ability('raptor', self.row0['Cast'])
 
     def add_rotation(self, s):
         for c in s:
