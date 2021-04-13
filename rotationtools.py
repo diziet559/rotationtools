@@ -44,7 +44,7 @@ class rotationplot:
     ax = ()
     showlabels = 1 # set to true to show labels on all shotss
     rot_stats = 'Ranged speed: {speed:.1f}\nRanged haste: {haste:.2f}\nDuration: {dur:.2f}'
-    dps_stats = 'rAP: {rap:.0f}\nmAP: {map:.0f}\nCrit: {crit:.1f}%\nDPS: {dps:.0f}'
+    dps_stats = 'rAP: {rap:.0f}\nmAP: {map:.0f}\nCrit: {crit:.1f}%\nDPS: {dps:.0f}\nDMG: {dmg:.0f}'
     row0 = {
         'Auto': 0.1,
         'Cast': 1.1,
@@ -93,7 +93,7 @@ class rotationplot:
         self.calc_dps()
         rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=self.abilities['auto'].available)
         plt.annotate(rota,(0.85,0.5), xycoords='axes fraction')
-        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=self.dps)
+        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=self.dps,dmg=self.total_damage)
         plt.annotate(stats,(0.85,0.3), xycoords='axes fraction')
         plt.annotate(
             abilities.create_breakdown(self.abilities, self.total_damage),
