@@ -136,6 +136,8 @@ class rotationplot:
                 self.ax.bar(self.auto_available, 0.2, self.current_time-self.auto_available, 0.4, facecolor='white', edgecolor='lightcoral', align='edge')
                 if self.showlabels:
                     plt.annotate('{delay:.2f}'.format(delay=self.current_time-self.auto_available), (self.current_time-0.02, 0.25), ha='right', va='center')
+        if self.first_auto<0:
+            self.first_auto = self.current_time
         if self.showlabels:
             if self.ax:
                 plt.annotate('as', (self.current_time+0.25/self.haste, 0.5), ha='center', va='center')
@@ -268,6 +270,6 @@ if __name__ == "__main__":
     #r.add_rotation('aswasasras')
     r.haste=1.2*1.15
     r.melee_haste = 1
-    r.add_rotation('asmasasAasas')
+    r.add_rotation('as')
     #r.add_rotation('asmahsasasas') # 5:5:1:1 hawk after 2nd auto -> skip arcane, got to 1:1
     r.complete_fig()
