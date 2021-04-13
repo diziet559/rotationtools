@@ -53,7 +53,7 @@ class rotationplot:
 
     def init_fig(self):
         self.clear()
-        fig, self.ax = plt.subplots(figsize=(20,8), dpi=100)
+        fig, self.ax = plt.subplots(figsize=(20, 8), dpi=100)
 
     def clear(self):
         self.rotation_string = ''
@@ -80,23 +80,23 @@ class rotationplot:
         return self.total_damage / duration * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
 
     def complete_fig(self):
-        self.ax.set_xlim(-0.25, 14)
+        self.ax.set_xlim(-0.25, 12)
         self.ax.set_ylim(0, 3)
         self.ax.set_yticks([0.5, 1.5, 2.5])
         self.ax.set_yticklabels(self.row0.keys())
         self.ax.set_xlabel('time [s]')
         labels = list(self.abilities.keys())
         handles = [plt.Rectangle((0,0),1,1, color=self.abilities[label].color) for label in labels]
-        plt.legend(handles, labels, bbox_to_anchor=(1.01, 1), loc='upper left')
+        plt.legend(handles, labels, bbox_to_anchor=(1.005, 1), loc='upper left')
         duration = self.calc_dur()
         dps = self.calc_dps(duration)
         rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=duration)
-        plt.annotate(rota,(0.85,0.5), xycoords='axes fraction')
+        plt.annotate(rota,(1.005,0.5), xycoords='axes fraction')
         stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps,dmg=self.total_damage)
-        plt.annotate(stats,(0.85,0.3), xycoords='axes fraction')
+        plt.annotate(stats,(1.005,0.3), xycoords='axes fraction')
         plt.annotate(
             abilities.create_breakdown(self.abilities, self.total_damage),
-            (1.01, -0.02), xycoords='axes fraction'
+            (1.005, -0.02), xycoords='axes fraction'
         )
         #plt.annotate('Range haste: '+str(self.haste),(1.01,0.455), xycoords='axes fraction')
         plt.show()
