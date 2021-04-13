@@ -1,15 +1,6 @@
 # rotationtools library
 WoW-TBC Hunter rotation tools and visualization
 
-<<<<<<< HEAD
-### To run locally
-- Install python3
-- Install depencencies
-
-```
-pip3 install matplotlib
-```
-=======
 ## Usage
 
 An instance of the `rotationplot` class has the function `add_rotation()` that accepts strings in the shot notation format defined below. The object will then calculate the duration and damage of this rotation based on current damage stats and current haste. Currently, it does not handle any proc effects, but Improved Aspect of the Hawk procs can be added manually. They do currently not expire.
@@ -55,4 +46,11 @@ r.complete_fig()
 ![French rotation](img/french.png)
 
 French rotation (5:5:1:1)
->>>>>>> upstream/main
+
+### To run locally
+- Install python3
+- Install depencencies
+
+```
+pip3 install matplotlib
+```
