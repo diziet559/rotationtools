@@ -1,6 +1,20 @@
 import matplotlib.pyplot as plt
 
 def shorthand(s):
+    '''
+    Convert a rotation string to a shorthand shot ratio string.
+
+    Parameters
+    ----------
+    s : string
+        Rotation string using a, s, m, A, r, w 
+
+    Returns
+    -------
+    out : string
+        Shot ratio string.
+
+    '''
     autos = s.count('a')
     steadies = s.count('s')
     multis = s.count('m')
@@ -20,6 +34,12 @@ class rotationplot:
     focusedFire = 2
     mortalShots = 5
     serpentsSwiftness = 5
+    savageStrikes = 0
+    killerInstict = 0
+    survivalInstincts = 0
+    barrage = 0
+    rangedWeaponSpec = 0
+    
     
     # rotation string saving
     rotation_string = ''
@@ -27,6 +47,8 @@ class rotationplot:
     # stats for ranged and melee combat w/ all buffs
     ranged = {'dps': 83.3, 'speed': 3.0, 'ammo_dps': 32,'ap': 2696, 'crit': 39.12, 'crit_mod': 1.3, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**3}
     melee = {'dps': 118.6, 'speed': 3.7, 'ap': 2300, 'crit': 34.12, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**3}
+    #ranged = {'dps': 83.3, 'speed': 3.0, 'ammo_dps': 32,'ap': 2928, 'crit': 45.12, 'crit_mod': 1.3, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**2}
+    #melee = {'dps': 118.6, 'speed': 3.7, 'ap': 2520, 'crit': 40.12, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**2}
     # multiplier: 2% bm talent, 4% arms warr, 3x 3% FI @80% uptime (averaged out)
     haste = 1.2 * 1.15
     melee_haste = 1
@@ -70,6 +92,16 @@ class rotationplot:
     def init_fig(self):
         self.clear()
         fig, self.ax = plt.subplots(figsize=(10,5), dpi=150)
+        
+    def set_bm(self):
+        self.ranged = {'dps': 83.3, 'speed': 3.0, 'ammo_dps': 32,'ap': 2696, 'crit': 39.12, 'crit_mod': 1.3, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**3}
+        self.melee = {'dps': 118.6, 'speed': 3.7, 'ap': 2300, 'crit': 34.12, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**3}
+        self.haste = 1.2 * 1.15 * self.melee_haste
+    
+    def set_sv(self):
+        self.ranged = {'dps': 83.3, 'speed': 3.0, 'ammo_dps': 32,'ap': 2928, 'crit': 45.12, 'crit_mod': 1.3, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**2}
+        self.melee = {'dps': 118.6, 'speed': 3.7, 'ap': 2520, 'crit': 40.12, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**2}
+        self.haste = 1.15 * self.melee_haste
     
     def clear(self):
         self.rotation_string = ''
@@ -90,15 +122,15 @@ class rotationplot:
         self.ax = 0
         self.counts = {'auto': 0, 'steady': 0, 'multi': 0, 'arcane': 0, 'raptor': 0, 'melee': 0}
         self.damage['auto'] = ((self.ranged['dps'] + self.ranged['ammo_dps'])*self.ranged['speed'] \
-            + self.ranged['ap']/14*self.ranged['speed']) * self.ranged['multiplier'] * (1 + 1.3 * self.ranged['crit']/100)
+            + self.ranged['ap']/14*self.ranged['speed']) * self.ranged['multiplier'] * (1 + self.ranged['crit_mod'] * self.ranged['crit']/100)
         self.damage['steady'] = (self.ranged['dps']*2.8 +150 \
-            + self.ranged['ap']*0.2) * self.ranged['multiplier'] * (1 + 1.3 * self.ranged['crit']/100)
+            + self.ranged['ap']*0.2) * self.ranged['multiplier'] * (1 + self.ranged['crit_mod'] * self.ranged['crit']/100)
         self.damage['multi'] = ((self.ranged['dps'] + self.ranged['ammo_dps'])*self.ranged['speed'] +205 \
-            + self.ranged['ap']*0.2) * self.ranged['multiplier'] * (1 + 1.3 * self.ranged['crit']/100)
+            + self.ranged['ap']*0.2) * self.ranged['multiplier'] * (1 + self.ranged['crit_mod'] * self.ranged['crit']/100)
         self.damage['arcane'] = (273 \
-            + self.ranged['ap']*0.15) * self.ranged['multiplier'] * (1 + 1.3 * self.ranged['crit']/100)
+            + self.ranged['ap']*0.15) * self.ranged['multiplier'] * (1 + self.ranged['crit_mod'] * self.ranged['crit']/100)
         self.damage['raptor'] = (self.melee['dps']*self.melee['speed'] + 170 \
-            + self.melee['ap']/14*self.melee['speed']) * self.melee['multiplier'] * (1 + self.melee['crit']/100)
+            + self.melee['ap']/14*self.melee['speed']) * self.melee['multiplier'] * (1 + (self.melee['crit'] + self.savageStrikes*10)/100)
         self.damage['melee'] = (self.melee['dps']*self.melee['speed'] \
             + self.melee['ap']/14*self.melee['speed']) * self.melee['multiplier'] * (1 - 0.25*0.35 + self.melee['crit']/100)
     
@@ -108,7 +140,8 @@ class rotationplot:
         self.add_rotation(s)
         
     def calc_dur(self):
-        end_time = max(self.auto_available-self.first_auto,self.gcd_available-self.first_gcd, \
+        end_time = max(self.current_time, \
+                       self.auto_available-self.first_auto,self.gcd_available-self.first_gcd, \
                        self.arcane_available-self.first_arcane, self.multi_available-self.first_multi, \
                        self.raptor_available-self.first_raptor, self.melee_available-self.first_melee)
         return end_time
@@ -271,9 +304,16 @@ class rotationplot:
 if __name__ == "__main__":
     r = rotationplot()
     r.init_fig()
-    #r.add_rotation('asmasasAasas') # 5:5:1:1:1:1 french non-weave
+    r.melee_haste = 1.0
+    #r.set_bm(); r.add_rotation('asmasasAasas') # 5:5:1:1 french non-weave
+    #r.set_sv(); r.add_rotation('asmasAasass') # french survival
+    #r.set_sv(); r.add_rotation('hasmasasAasas') # french survival with hawk
+    r.set_bm(); r.add_rotation('hasAamasasasas') # 5:6:1:1 bm with hawk
+    #r.add_rotation('assass')
     #r.add_rotation('asmarsasAawsas') # 5:5:1:1:1:1 french 2-weave
+    #r.add_rotation('asmarsasAwasass') # 5:5:1:1:1:1 french 2-weave (sv)
     #r.add_rotation('asmarsasAawsasaws') # 6:6:1:1:1:1 french 3-weave
+    #r.add_rotation('asmarsasAawsaswass') # 6:6:1:1:1:1 french 3-weave (sv)
     #r.add_rotation('asAarmasawsasasw') # 5:6:1:1 
     #r.add_rotation('asmahrsasawsas') # 5:5:1:1:1:1 hawk after 2nd, skip arcane
     #r.add_rotation('rasaswmasasAwas') # 5:5:1:1:1:1
@@ -282,9 +322,8 @@ if __name__ == "__main__":
     #r.add_rotation('asmarsasAarsasahsrasasr') # 5:5:1:1:1:1
     #r.add_rotation('asmasasAasas') # 5:5:1:1
     #r.add_rotation('hasmasasasasas') # 6:6:1
+    #r.add_rotation('hamasasasasas')
     #r.add_rotation('aswasasras')
-    r.haste=1.2*1.15
-    r.melee_haste = 1
-    r.add_rotation('as')
+    #r.add_rotation('asasrasasw')
     #r.add_rotation('asmahsasasas') # 5:5:1:1 hawk after 2nd auto -> skip arcane, got to 1:1
     r.complete_fig()
