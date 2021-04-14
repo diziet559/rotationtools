@@ -134,15 +134,26 @@ class rotationplot:
 
         ability.use(self.current_time)
 
-    def add_auto(self):
+    def add_auto_delay(self):
         auto = self.abilities['auto']
+        delay = self.current_time - auto.available
 
-        if (auto.available < self.current_time):
-            self.add_concrete_ability(
-                abilities.auto_delay(self.current_time - auto.available),
-                0.4, auto.available, False
-            )
+        if (delay <= 0):
+            return
 
+        self.add_concrete_ability(
+            abilities.auto_delay(delay),
+            0.4, auto.available, False
+        )
+
+        plt.annotate(
+            '{delay:.2f}'.format(delay=delay), (self.current_time-0.02, 0.25),
+            ha='right', va='center'
+        )
+
+
+    def add_auto(self):
+        self.add_auto_delay()
         self.add_ability('auto', self.row0['Auto'])
 
     def add_gcd_ability(self, ability_name):
