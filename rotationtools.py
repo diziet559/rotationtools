@@ -123,7 +123,7 @@ class rotationplot:
 
         if self.ax and self.showlabels and ability.has_annotation:
             plt.annotate(
-                ability.annotation, (ability.duration / 2, y1 + 0.4),
+                ability.annotation, (self.current_time + ability.duration / 2, y1 + 0.4),
                 ha='center', va='center'
             )
 
