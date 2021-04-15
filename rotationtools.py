@@ -53,7 +53,7 @@ class rotationplot:
 
     def init_fig(self):
         self.clear()
-        fig, self.ax = plt.subplots(figsize=(20, 8), dpi=100)
+        fig, self.ax = plt.subplots(figsize=(10, 6), dpi=150)
 
     def clear(self):
         self.rotation_string = ''
@@ -69,6 +69,13 @@ class rotationplot:
         s = self.rotation_string
         self.clear()
         self.add_rotation(s)
+    
+    def change_haste(self):
+        self.abilities['auto'].duration = 0.5 / self.ranged.haste
+        self.abilities['auto'].cd = (self.ranged.weapon.speed - 0.5) / self.ranged.haste
+        self.abilities['steady'].duration = 1.5 / self.ranged.haste
+        self.abilities['multi'].duration = 0.5 / self.ranged.haste
+        self.abilities['melee'].cd = self.melee.weapon.speed / self.melee.haste
 
     def calc_dur(self):
         return max([

@@ -1,5 +1,4 @@
 import rotationtools
-import abilities
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
@@ -18,8 +17,8 @@ if __name__ == "__main__":
         for h in range(0,101,1):
             x.append(h)
             rot.melee_haste = (1+h/100)
-            rot.ranged.haste = 1.2 * 1.15 * (1+h/100)
-            rot.abilities = abilities.create(rot.ranged, rot.melee)
+            rot.ranged.haste = 1.15 * (1+h/100)
+            rot.change_haste()
             #rot.set_sv()
             #rot.haste = 1.2 * 1.15 * rot.melee_haste
             rot.recalc()
