@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import damage
 import abilities
+import talents
 
 def shorthand(s):
     autos = s.count('a')
@@ -19,6 +20,8 @@ def shorthand(s):
 
 
 class rotationplot:
+    talent = talents.Talentbuild()
+    
     ranged = damage.AverageRangedDamage(
         damage.Weapon(83.3, 3.0),
         damage.Ammo(32),
@@ -64,6 +67,9 @@ class rotationplot:
             ability.reset()
 
         self.ax = 0
+    
+    def setTalents(self, s):
+        self.talents.load(s)
 
     def recalc(self):
         s = self.rotation_string
