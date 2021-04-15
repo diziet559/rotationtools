@@ -86,7 +86,7 @@ class rotationplot:
     raptorcolor = 'sandybrown'
     
     # annotation string prototypes
-    rot_stats = 'Ranged speed: {speed:.1f}\nRanged haste: {haste:.2f}\nDuration: {dur:.2f}'
+    rot_stats = 'Ranged speed: {speed:.1f}\nRanged haste: {haste:.2f}\nDuration: {dur:.2f}\nShorthand: {short}'
     dps_stats = 'rAP: {rap:.0f}\nmAP: {map:.0f}\nCrit: {crit:.1f}%\nDPS: {dps:.0f}'
     
     def init_fig(self):
@@ -97,11 +97,13 @@ class rotationplot:
         self.ranged = {'dps': 83.3, 'speed': 3.0, 'ammo_dps': 32,'ap': 2696, 'crit': 39.12, 'crit_mod': 1.3, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**3}
         self.melee = {'dps': 118.6, 'speed': 3.7, 'ap': 2300, 'crit': 34.12, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**3}
         self.haste = 1.2 * 1.15 * self.melee_haste
+        self.savageStrikes = 0
     
     def set_sv(self):
         self.ranged = {'dps': 83.3, 'speed': 3.0, 'ammo_dps': 32,'ap': 2928, 'crit': 45.12, 'crit_mod': 1.3, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**2}
         self.melee = {'dps': 118.6, 'speed': 3.7, 'ap': 2520, 'crit': 40.12, 'multiplier': 1.02 * 1.04 * (1 + 0.8 * 0.03)**2}
         self.haste = 1.15 * self.melee_haste
+        self.savageStrikes = 2
     
     def clear(self):
         self.rotation_string = ''
@@ -169,11 +171,11 @@ class rotationplot:
             if self.counts[cast] > 0:
                 part_dps = self.counts[cast] * self.damage[cast] / self.total_damage
                 breakdown = breakdown + cast + ': ' + str(self.counts[cast]) + ' (' + '{part:.1f}'.format(part=100*part_dps) + '%)\n'
-        rota = self.rot_stats.format(speed = self.ranged['speed'], haste = self.haste, dur=self.calc_dur())
-        plt.annotate(rota,(1.01,0.5), xycoords='axes fraction')
+        rota = self.rot_stats.format(speed = self.ranged['speed'], haste = self.haste, dur=self.calc_dur(), short=shorthand(self.rotation_string))
+        #plt.annotate(rota,(1.01,0.47), xycoords='axes fraction')
         stats = self.dps_stats.format(rap=self.ranged['ap'],map=self.melee['ap'],crit=self.ranged['crit'],dps=self.dps)
-        plt.annotate(stats,(1.01,0.3), xycoords='axes fraction')
-        plt.annotate(breakdown,(1.01,-0.02), xycoords='axes fraction')
+        #plt.annotate(stats,(1.01,0.27), xycoords='axes fraction')
+        #plt.annotate(breakdown,(1.01,-0.02), xycoords='axes fraction')
         plt.show()
 
     def add_auto(self):
@@ -245,7 +247,7 @@ class rotationplot:
                 plt.annotate('Ar', (self.current_time+0.05/self.haste, 1.5), ha='center', va='center')
         self.gcd_available = self.current_time + 1.5
         self.current_time = self.current_time + 0.1
-        self.arcane_available = self.current_time + 6
+        self.arcane_available = self.current_time + 5.6
         self.total_damage = self.total_damage + self.damage['arcane']
         self.counts['arcane'] = self.counts['arcane'] + 1
         
@@ -305,15 +307,15 @@ if __name__ == "__main__":
     r = rotationplot()
     r.init_fig()
     r.melee_haste = 1.0
-    #r.set_bm(); r.add_rotation('asmasasAasas') # 5:5:1:1 french non-weave
-    #r.set_sv(); r.add_rotation('asmasAasass') # french survival
+    #r.set_sv(); r.add_rotation('asmasasAasas') # 5:5:1:1 french non-weave
+    r.set_sv(); r.add_rotation('asmasAasasAa') # french survival
     #r.set_sv(); r.add_rotation('hasmasasAasas') # french survival with hawk
-    r.set_bm(); r.add_rotation('hasAamasasasas') # 5:6:1:1 bm with hawk
+    #r.set_bm(); r.add_rotation('hasAamasasasas') # 5:6:1:1 bm with hawk
     #r.add_rotation('assass')
     #r.add_rotation('asmarsasAawsas') # 5:5:1:1:1:1 french 2-weave
-    #r.add_rotation('asmarsasAwasass') # 5:5:1:1:1:1 french 2-weave (sv)
+    #r.set_sv(); r.add_rotation('asmarsasAwasasws') # 5:5:1:1:1:1 french 2-weave (sv)
     #r.add_rotation('asmarsasAawsasaws') # 6:6:1:1:1:1 french 3-weave
-    #r.add_rotation('asmarsasAawsaswass') # 6:6:1:1:1:1 french 3-weave (sv)
+    #r.set_sv(); r.add_rotation('asmarsasAawsaswass') # 6:6:1:1:1:1 french 3-weave (sv)
     #r.add_rotation('asAarmasawsasasw') # 5:6:1:1 
     #r.add_rotation('asmahrsasawsas') # 5:5:1:1:1:1 hawk after 2nd, skip arcane
     #r.add_rotation('rasaswmasasAwas') # 5:5:1:1:1:1
