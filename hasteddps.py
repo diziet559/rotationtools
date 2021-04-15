@@ -2,7 +2,7 @@ import rotationtools
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    names = ['as', 'ass', 'aas', 'aaas', 'asmasasAasas', 'asasasaAaasasama']
+    names = ['as', 'ass', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asmasasaAasas', 'asasasaAaasasama']
     labels = []
     rotations = []
     for n in names:
@@ -14,13 +14,13 @@ if __name__ == "__main__":
     for rot in rotations:
         x = []
         dps = []
-        for h in range(-20,301,1):
+        for h in range(0,101,1):
             x.append(h)
-            rot.haste = 1.15 * (1+h/100)
             rot.melee_haste = (1+h/100)
+            rot.set_sv()
+            #rot.haste = 1.2 * 1.15 * rot.melee_haste
             rot.recalc()
             dps.append(rot.calc_dps())
-        #r.add_rotation('asmarsasAawsasaws') # 6:6:1:1:1:1 french 3-weave
         d.append(dps)
     ax = plt.subplots(figsize=(10, 6), dpi=150)
     for dps in d:
@@ -29,4 +29,12 @@ if __name__ == "__main__":
     plt.xlabel('additional haste [%]')
     plt.ylabel('dps')
     plt.legend(labels)
+    
+    max_dps = []
+    for count, value in enumerate(x):
+        rot_dps = []
+        for dps in d:
+            rot_dps.append(dps[count])
+        max_dps.append(max(rot_dps))
+        
     
