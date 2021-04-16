@@ -20,20 +20,7 @@ def shorthand(s):
 
 
 class rotationplot:
-    talent = talents.Talentbuild()
-    
-    ranged = damage.AverageRangedDamage(
-        damage.Weapon(83.3, 3.0),
-        damage.Ammo(32),
-        2696, 39.12, 1.2 * 1.15,
-        1.02 * 1.04 * (1 + 0.8 * 0.03)**3
-    )
-
-    melee = damage.AverageMeleeDamage(
-        damage.Weapon(118.6, 3.7),
-        2300, 34.12, 1,
-        1.02 * 1.04 * (1 + 0.8 * 0.03)**3
-    )
+    character = talents.Character('')
 
     rotation_string = ''
 
@@ -41,7 +28,6 @@ class rotationplot:
     total_damage = 0
     remaining_armor = 6200 - 3075 - 610 - 800 # base - iEA - FF - CoR
 
-    abilities = abilities.create(ranged, melee)
     hawk_until = 0
 
     ax = ()
@@ -53,6 +39,17 @@ class rotationplot:
         'Cast': 1.1,
         'GCD': 2.1,
     }
+    
+    def __init__(self, s=None):
+        if not s:
+            s = 'bm'
+        character = talents.Character(s)
+        avgRngDmg = character.buffedStats(1)
+        self.ranged = damage.AverageRangedDamage(avgRngDmg[0],avgRngDmg[1],avgRngDmg[2],avgRngDmg[3],avgRngDmg[4],avgRngDmg[5])
+        avgMeleeDmg = character.buffedStats(0)
+        self.melee = damage.AverageMeleeDamage(avgMeleeDmg[0],avgMeleeDmg[1],avgMeleeDmg[2],avgMeleeDmg[3],avgMeleeDmg[4])
+        self.abilities = abilities.create(self.ranged, self.melee)
+    
 
     def init_fig(self):
         self.clear()
@@ -84,6 +81,7 @@ class rotationplot:
         self.abilities['melee'].cd = self.melee.weapon.speed / self.melee.haste
 
     def calc_dur(self):
+        self.abilities['gcd'].first_usage = self.abilities['gcd'].first_usage + 1.5 # first usage seems weird for gcd
         return max([
             self.abilities[ability].available - self.abilities[ability].first_usage
             for ability in abilities.ABILITIES_WITH_CD
@@ -201,9 +199,11 @@ class rotationplot:
 
 
 if __name__ == "__main__":
-    r = rotationplot()
+    r = rotationplot('sv')
     r.init_fig()
-    #r.add_rotation('asmasasAasas') # 5:5:1:1:1:1 french non-weave
+    #r.add_rotation('as') # 1:1
+    r.add_rotation('asmasAasass') # 5:4:1:1 french survival
+    #r.add_rotation('asmasasAasas') # 5:5:1:1 french non-weave
     #r.add_rotation('asmarsasAawsas') # 5:5:1:1:1:1 french 2-weave
     #r.add_rotation('asmarsasAawsasaws') # 6:6:1:1:1:1 french 3-weave
     #r.add_rotation('asAarmasawsasasw') # 5:6:1:1
@@ -212,7 +212,7 @@ if __name__ == "__main__":
     #r.add_rotation('amwasaswasaswamaswasaswas') # 1:1 mw with multis
     #r.add_rotation('asasasasasasasasasas') # 1:1 mw
     #r.add_rotation('asmarsasAarsasahsrasasr') # 5:5:1:1:1:1
-    r.add_rotation('asmasasAasas') # 5:5:1:1
+    #r.add_rotation('asmasasAasas') # 5:5:1:1
     #r.add_rotation('hasmasasasasas') # 6:6:1
     #r.add_rotation('aswasasras')
 

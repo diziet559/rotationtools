@@ -55,15 +55,15 @@ class AverageMeleeDamage:
         self.crit = crit
         self.multiplier = multiplier
         self.haste = haste
-        self.crit_dmg_multiplier = 1.3
+        self.crit_dmg_multiplier = 1
 
     def auto(self):
         return self.attack(0, 1 / 14 * self.weapon.speed) * \
-            (1 - (0.25 * 0.35) + self.crit / 100)
+            (1 - (0.25 * 0.35) + self.crit / 100 * self.crit_dmg_multiplier)
 
     def raptor(self):
         return self.attack(170, 1 / 14 * self.weapon.speed) * \
-            (1 + self.crit / 100)
+            (1 + self.crit / 100 * self.crit_dmg_multiplier)
 
     def attack(self, dmg_increase, ap_mod):
         weapon_dmg = self.weapon.speed * self.weapon.dps
