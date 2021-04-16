@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     spec_dps = []
-    for spec in ['bm', 'sv']:
+    for spec in ['bm']:#, 'sv']:
         names = ['as', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama']
         #spec = 'sv'
         plotit = 1

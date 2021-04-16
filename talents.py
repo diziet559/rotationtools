@@ -158,7 +158,7 @@ class Character:
             self.raid.grp.bm = max(self.raid.grp.bm - 1, 0)
             self.usingFlask = 1
         else:
-            self.usingFlask = 0
+            self.usingFlask = 1
         
     def buffedStats(self, ranged):
         buffs = self.raid.buffs()
@@ -166,7 +166,7 @@ class Character:
         # buffs + scroll + food (20 agi each) + elixir if not flasking
         total_agi = (self.gear.agi + buffs[5] + (75 if not self.usingFlask else 40)) \
             * (1.1 if buffs[6] else 1) * (1 + 0.03 * self.talents.lightningReflexes)
-        mcrit = total_agi/40 + (self.gear.crit_rating + 0 if self.usingFlask else 20)/22.1 - 1.5 + self.talents.killerInstincts \
+        mcrit = total_agi/40 + (self.gear.crit_rating + (0 if self.usingFlask else 20))/22.1 - 1.5 + self.talents.killerInstincts \
             + buffs[3] + debuffs[3]
         rcrit = mcrit + self.talents.mortalShots
         r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0)
