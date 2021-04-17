@@ -41,8 +41,8 @@ class Talentbuild:
         
     def load(self, s):
         if (s=='7/20/34') or (s=='sv'):
-#            self.fromWowHead('https://tbc.wowhead.com/talent-calc/hunter/502-0550201205-333200023103023005103')
-#        elif s=='0/27/34':
+            self.fromWowHead('https://tbc.wowhead.com/talent-calc/hunter/502-0550201205-333200023103023005103')
+        elif s=='0/27/34':
             self.fromWowHead('https://tbc.wowhead.com/talent-calc/hunter/-055220120500302-333200023103023005103')
         elif (s=='41/20/0') or (s=='bm'):
             self.fromWowHead('https://tbc.wowhead.com/talent-calc/hunter/532002005050122431051-0505201205')
@@ -78,6 +78,11 @@ class Gear:
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 598, 1814, 1756, 173, 96, 0
+        elif s=='d3t3':
+            # https://seventyupgrades.com/set/7SoWG9nknKp79h4cJ5u1ng
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 546, 1668, 1605, 185, 86, 0
 
 class Group:
     feral = 1
@@ -150,6 +155,7 @@ class Character:
     raid = Raidsetup()
     talents = Talentbuild()
     usingFlask = 1 # elixier of major agility if not
+    usingDrums = 0
     
     def __init__(self, spec):
         self.talents.load(spec)
@@ -159,6 +165,8 @@ class Character:
             self.usingFlask = 1
         else:
             self.usingFlask = 1
+        if self.usingDrums:
+            self.gear.haste_rating = self.gear.haste_rating + 80
         
     def buffedStats(self, ranged):
         buffs = self.raid.buffs()
@@ -174,7 +182,7 @@ class Character:
         r_ap = r_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[0]
         m_ap = m_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[1]
         #hit = self.gear.hit_rating/15.8 + self.talents.surefooted + debuffs[2]
-        haste = (1 + self.gear.haste_rating/15.8)
+        haste = (1 + self.gear.haste_rating/15.8/100)
         range_haste = haste * 1.15 * (1 + self.talents.serpentsSwiftness * 0.04)
         multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.8)
         if ranged:

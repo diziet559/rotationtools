@@ -88,7 +88,25 @@ class rotationplot:
         self.abilities = abilities.create(self.ranged, self.melee)
         self.abilities['multi'].damage = self.abilities['multi'].damage * (1 + self.character.talents.barrage * 0.04)
 
-    def calc_dur(self):
+    def calc_dur(self, verbose=0):
+        if verbose:
+            print(self.current_time)
+            print([
+                ability
+                for ability in abilities.ABILITIES_WITH_CD
+            ])
+            print([
+                self.abilities[ability].available
+                for ability in abilities.ABILITIES_WITH_CD
+            ])
+            print([
+                self.abilities[ability].first_usage
+                for ability in abilities.ABILITIES_WITH_CD
+            ])
+            print([
+                max(self.abilities[ability].available, self.current_time) - self.abilities[ability].first_usage
+                for ability in abilities.ABILITIES_WITH_CD
+            ])
         if self.abilities['gcd'].first_usage<0:
             self.abilities['gcd'].first_usage = self.abilities['gcd'].first_usage + 1.5 # first usage seems weird for gcd
         return max([
@@ -125,6 +143,7 @@ class rotationplot:
             abilities.create_breakdown(self.abilities, self.total_damage),
             (1.005, -0.02), xycoords='axes fraction'
         )
+        self.ax.set_xlim(0, duration)
         if title:
             plt.title(title)
         #plt.annotate('Range haste: '+str(self.haste),(1.01,0.455), xycoords='axes fraction')
