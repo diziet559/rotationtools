@@ -13,13 +13,13 @@ class Ability:
         self.cd = cd
         self.annotation = annotation
         self.has_annotation = annotation != None
-        self.first_usage = -1
+        self.first_usage = -0.00000000001
         self.available = 0
         self.count = 0
         self.has_availability = cd != None
 
     def reset(self):
-        self.first_usage = -1
+        self.first_usage = -0.0000000001
         self.available = 0
         self.count = 0
 
