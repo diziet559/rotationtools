@@ -26,14 +26,14 @@ class rotationplot:
 
     current_time = 0
     total_damage = 0
-    remaining_armor = 6200 - 3075 - 610 - 800 # base - iEA - FF - CoR
+    remaining_armor = 6200 - 3075 - 610 - 800 - 600# base - iEA - FF - CoR - D3 proc always up
 
     hawk_until = 0
 
     ax = ()
     showlabels = 1 # set to true to show labels on all shotss
     rot_stats = 'Ranged speed: {speed:.1f}\nRanged haste: {haste:.2f}\nDuration: {dur:.2f}'
-    dps_stats = 'rAP: {rap:.0f}\nmAP: {map:.0f}\nCrit: {crit:.1f}%\nDPS: {dps:.0f}\nDMG: {dmg:.0f}'
+    dps_stats = 'rAP: {rap:.0f}\nmAP: {map:.0f}\nCrit: {crit:.1f}%\nDPS: {dps:.0f}'
     row0 = {
         'Auto': 0.1,
         'Cast': 1.1,
@@ -89,17 +89,18 @@ class rotationplot:
         self.abilities['multi'].damage = self.abilities['multi'].damage * (1 + self.character.talents.barrage * 0.04)
 
     def calc_dur(self):
-        self.abilities['gcd'].first_usage = self.abilities['gcd'].first_usage + 1.5 # first usage seems weird for gcd
+        if self.abilities['gcd'].first_usage<0:
+            self.abilities['gcd'].first_usage = self.abilities['gcd'].first_usage + 1.5 # first usage seems weird for gcd
         return max([
-            self.abilities[ability].available - self.abilities[ability].first_usage
+            max(self.abilities[ability].available, self.current_time) - self.abilities[ability].first_usage
             for ability in abilities.ABILITIES_WITH_CD
         ])
 
     def calc_dps(self, duration):
         return self.total_damage / duration * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
 
-    def complete_fig(self):
-        self.ax.set_xlim(-0.25, 12)
+    def complete_fig(self, title=None):
+        #self.ax.set_xlim(-0.25, 12)
         self.ax.set_ylim(0, 3)
         self.ax.set_yticks([0.5, 1.5, 2.5])
         self.ax.set_yticklabels(self.row0.keys())
@@ -111,12 +112,21 @@ class rotationplot:
         dps = self.calc_dps(duration)
         rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=duration)
         plt.annotate(rota,(1.005,0.5), xycoords='axes fraction')
-        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps,dmg=self.total_damage)
-        plt.annotate(stats,(1.005,0.3), xycoords='axes fraction')
+        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps)
+        plt.annotate(stats,(1.005,0.35), xycoords='axes fraction')
+        gcd_eff = self.abilities['gcd'].count * 1.5 / duration
+        auto_eff = self.abilities['auto'].count * (self.abilities['auto'].duration + self.abilities['auto'].cd) / duration
+        eff_str = 'gcd efficiency: ' + str(round(gcd_eff*100)) + '%\nauto efficiency: ' + str(round(auto_eff*100)) + '%'
+        plt.annotate(
+            eff_str,
+            (1.005, 0.23), xycoords='axes fraction'
+        )
         plt.annotate(
             abilities.create_breakdown(self.abilities, self.total_damage),
             (1.005, -0.02), xycoords='axes fraction'
         )
+        if title:
+            plt.title(title)
         #plt.annotate('Range haste: '+str(self.haste),(1.01,0.455), xycoords='axes fraction')
         plt.show()
 
@@ -180,11 +190,9 @@ class rotationplot:
         self.add_ability(ability_name, self.row0['Cast'])
 
     def add_raptor(self):
-        print(self.current_time)
         self.add_ability('raptor', self.row0['Cast'])
 
     def add_melee(self):
-        print(self.current_time)
         self.add_ability('melee', self.row0['Cast'])
 
     def add_rotation(self, s):
@@ -207,23 +215,7 @@ class rotationplot:
 
 
 if __name__ == "__main__":
-    r = rotationplot('sv')
+    r = rotationplot('bm')
     r.init_fig()
-    #r.add_rotation('as') # 1:1
-    r.add_rotation('asmasAasass') # 5:4:1:1 french survival
-    #r.add_rotation('asmasasAasas') # 5:5:1:1 french non-weave
-    #r.add_rotation('asmarsasAawsas') # 5:5:1:1:1:1 french 2-weave
-    #r.add_rotation('asmarsasAawsasaws') # 6:6:1:1:1:1 french 3-weave
-    #r.add_rotation('asAarmasawsasasw') # 5:6:1:1
-    #r.add_rotation('asmahrsasawsas') # 5:5:1:1:1:1 hawk after 2nd, skip arcane
-    #r.add_rotation('rasaswmasasAwas') # 5:5:1:1:1:1
-    #r.add_rotation('amwasaswasaswamaswasaswas') # 1:1 mw with multis
-    #r.add_rotation('asasasasasasasasasas') # 1:1 mw
-    #r.add_rotation('asmarsasAarsasahsrasasr') # 5:5:1:1:1:1
-    #r.add_rotation('asmasasAasas') # 5:5:1:1
-    #r.add_rotation('hasmasasasasas') # 6:6:1
-    #r.add_rotation('aswasasras')
-
-    # r.add_rotation('as')
-    #r.add_rotation('asmahsasasas') # 5:5:1:1 hawk after 2nd auto -> skip arcane, got to 1:1
+    r.add_rotation('asmasasAasas') # 5:5:1:1 french non-weave
     r.complete_fig()
