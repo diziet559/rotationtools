@@ -33,7 +33,7 @@ class rotationplot:
     ax = ()
     showlabels = 1 # set to true to show labels on all shotss
     rot_stats = 'Ranged speed: {speed:.1f}\nRanged haste: {haste:.2f}\nDuration: {dur:.2f}'
-    dps_stats = 'rAP: {rap:.0f}\nmAP: {map:.0f}\nCrit: {crit:.1f}%\nDPS: {dps:.0f}'
+    dps_stats = 'AP: {rap:.0f} (r)/ {map:.0f} (m)\nCrit: {crit:.1f}%\nDPS: {dps:.0f} / Pet: {petdps:.0f}\nTotal: {totaldps:.0f}'
     row0 = {
         'Auto': 0.1,
         'Cast': 1.1,
@@ -78,7 +78,7 @@ class rotationplot:
         self.abilities['auto'].cd = (self.ranged.weapon.speed - 0.5) / self.ranged.haste
         self.abilities['steady'].duration = 1.5 / self.ranged.haste
         self.abilities['multi'].duration = 0.5 / self.ranged.haste
-        self.abilities['melee'].cd = self.melee.weapon.speed / self.melee.haste
+        self.abilities['melee'].cd = self.melee.weapon.speed / self.melee.haste - self.abilities['melee'].duration
 
     def change_stats(self):
         avgRngDmg = self.character.buffedStats(1)
@@ -128,20 +128,25 @@ class rotationplot:
         plt.legend(handles, labels, bbox_to_anchor=(1.005, 1), loc='upper left')
         duration = self.calc_dur()
         dps = self.calc_dps(duration)
+        petdps = self.character.pet.dps() * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
+        totaldps = dps + petdps
         rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=duration)
         plt.annotate(rota,(1.005,0.5), xycoords='axes fraction')
-        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps)
+        stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps,petdps=petdps,totaldps=totaldps)
         plt.annotate(stats,(1.005,0.35), xycoords='axes fraction')
         gcd_eff = self.abilities['gcd'].count * 1.5 / duration
         auto_eff = self.abilities['auto'].count * (self.abilities['auto'].duration + self.abilities['auto'].cd) / duration
         eff_str = 'gcd efficiency: ' + str(round(gcd_eff*100)) + '%\nauto efficiency: ' + str(round(auto_eff*100)) + '%'
+        if self.abilities['melee'].count>0 or self.abilities['raptor'].count>0:
+            weave_count = self.abilities['raptor'].count + self.abilities['melee'].count
+            eff_str = eff_str + '\nweaving efficiency: ' + str(round(weave_count * (self.abilities['melee'].cd+self.abilities['melee'].duration) / duration * 100)) + '%'
         plt.annotate(
             eff_str,
             (1.005, 0.23), xycoords='axes fraction'
         )
         plt.annotate(
             abilities.create_breakdown(self.abilities, self.total_damage),
-            (1.005, -0.02), xycoords='axes fraction'
+            (1.005, -0.03), xycoords='axes fraction'
         )
         self.ax.set_xlim(0, duration)
         if title:

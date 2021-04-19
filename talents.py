@@ -1,5 +1,6 @@
 # talents.py
 
+import weakref
 import damage
 
 def getChar(s, pos):
@@ -16,6 +17,9 @@ class Talentbuild:
         self.improvedAspectHawk = getChar(s, 0)
         self.focusedFire = getChar(s, 2)
         self.unleashedFury = getChar(s, 8)
+        self.ferocity = getChar(s, 10)
+        self.animalHandler = getChar(s, 14)
+        self.frenzy = getChar(s, 15)
         self.ferociousInspiration = getChar(s, 16)
         self.serpentsSwiftness = getChar(s, 19)
     def MM(self, s):
@@ -84,6 +88,65 @@ class Gear:
                 self.hit_rating, self.haste_rating \
                 = 546, 1668, 1605, 185, 86, 0
 
+class Pet:
+    avgDmg = 60
+    specialAvgDmg = 49
+    agi = 128
+    strength = 162
+    atkspd = 2.0
+    cobraReflexes = 1
+    family = 'ravager'
+    def __init__(self, owner):
+        self.owner = weakref.ref(owner)
+    def dmgBonus(self):
+        if self.family=='ravager':
+            return 1.1
+    def buffedStats(self):
+        owner_rap = self.owner().buffedStats(1)[2]
+        buffs = self.owner().raid.buffs()
+        debuffs = self.owner().raid.debuffs()
+        strength = (self.strength + 20 + \
+            (98 if (self.owner().raid.grp.sham or self.owner().raid.grp.enha) else 0)) \
+            * (1.1 if buffs[6] else 1)
+        agi = (self.agi + buffs[5] + 20) * (1.1 if buffs[6] else 1) # scroll of agi
+        m_ap = strength * 2 + 0.22 * owner_rap + buffs[1] + debuffs[1]
+        crit = agi/25.6 + 2 * self.owner().talents.ferocity + buffs[3] + debuffs[3] - 0.6
+        hit = self.owner().talents.animalHandler * 2 + buffs[2] + debuffs[2]
+        atkspd = self.atkspd / (1 + self.owner().talents.serpentsSwiftness * 0.04) / (1.3 if self.cobraReflexes else 1)
+        multiplier = (0.86 if self.cobraReflexes else 1) * buffs[4] * debuffs[4]
+        return m_ap, crit, hit, atkspd, multiplier
+    def dps(self):
+        stats = self.buffedStats()
+        dmg_mult = (1 + 0.04 * self.owner().talents.unleashedFury) * self.dmgBonus() * stats[4] * 1.25 # happiness modifier
+        mod_dmg = self.avgDmg + stats[0]/14*self.atkspd * dmg_mult
+        crit = stats[1] / 100
+        hasted_attack = stats[3]
+        if self.owner().talents.frenzy>0:
+            first_frenzy = 1/(1/hasted_attack + 1/1.5) / (crit * 0.2 * self.owner().talents.frenzy)
+            frenzied_attack = hasted_attack / 1.3
+            frenzy_drop = (1 - (crit * 0.2 * self.owner().talents.frenzy))**int(8/frenzied_attack + 5 + 1) # 1/atkspd autohits + 5 gore/claw/lightning + 1 kill command
+            average_extension = 8/int(8/frenzied_attack + 5 + 1) / crit
+            average_length = average_extension / frenzy_drop + 8
+            frenzy_uptime = average_length / (average_length + first_frenzy)
+            average_frenzied_atkspd = hasted_attack / (1 + frenzy_uptime * 0.3)
+        else:
+            frenzy_uptime = 0
+            average_frenzied_atkspd = hasted_attack
+        
+        if self.owner().talents.ferociousInspiration>0:
+            first_fi = 1/(1/average_frenzied_atkspd + 1/1.5) / crit
+            fi_drop = (1 - crit)**int(8/average_frenzied_atkspd + 5 + 1) # 1/atkspd autohits + 5 gore/claw/lightning + 1 kill command
+            average_length = average_extension / fi_drop + 10
+            fi_uptime = average_length / (average_length + first_fi)
+        else:
+            fi_uptime = 0
+        
+        autohit_dps = mod_dmg * (1 + crit) / average_frenzied_atkspd
+        skill_dps = self.specialAvgDmg * ((1+0.5*1) if self.family=='ravager' else 1) * (1 + crit) * dmg_mult / 1.5
+        
+        total_dps = (autohit_dps + skill_dps) * (1 + 0.01 * self.owner().talents.ferociousInspiration * fi_uptime)
+        return total_dps
+
 class Group:
     feral = 1
     bm = 2
@@ -94,7 +157,7 @@ class Group:
 
 class Raidsetup:
     grp = Group()
-    paladin = 1 # kings buff
+    paladin = 2 # kings + might buffs
     druid = 1 # gift of the wild
     warlock = 1 # curse of recklessness
     ret = 1
@@ -128,7 +191,7 @@ class Raidsetup:
         m_ap = m_ap + 110 # imp hunter's mark
         return (r_ap, m_ap, hit, crit, multiplier, armor_pen)
     
-    def buffs(self):
+    def buffs(self, pet=0, hunter_rap = 0):
         r_ap = 0
         m_ap = 0
         agi = 0
@@ -146,8 +209,14 @@ class Raidsetup:
             agi = agi + 18
         if (self.paladin>0):
             kings = 1
+            if self.paladin>=2:
+                m_ap = m_ap + 264
+                r_ap = r_ap + 264
         multiplier = multiplier * (1+0.03*0.8)**self.grp.bm
-        r_ap = 155 # aspect of the hawk
+        if not pet:
+            r_ap = r_ap + 155 # aspect of the hawk
+        if pet:
+            m_ap = m_ap + 0.22 * hunter_rap
         return (r_ap, m_ap, hit, crit, multiplier, agi, kings)
 
 class Character:
@@ -160,6 +229,7 @@ class Character:
     def __init__(self, spec):
         self.talents.load(spec)
         self.gear.load(spec)
+        self.pet = Pet(self)
         if spec=='bm':
             self.raid.grp.bm = max(self.raid.grp.bm - 1, 0)
             self.usingFlask = 1
@@ -186,7 +256,7 @@ class Character:
         range_haste = haste * 1.15 * (1 + self.talents.serpentsSwiftness * 0.04)
         multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.8)
         if ranged:
-            return (damage.Weapon(83.3, 3.0), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
+            return (damage.Weapon(83.3, 2.9), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
         else:
             return (damage.Weapon(118.6, 3.7), m_ap, mcrit, haste, multiplier)
         
@@ -196,5 +266,6 @@ class Character:
         return 2696, 39.12, 1.2 * 1.15, 1.02 * 1.04 * (1 + 0.8 * 0.03)**3
         
 if __name__ == "__main__":
-    c = Character('sv')
-    c.buffedStats(1)
+    c = Character('bm')
+    print(c.pet.dps())
+    

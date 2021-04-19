@@ -54,10 +54,10 @@ def create(ranged, melee):
         'gcd': Ability('black', 0, GCD_DURATION, GCD_DURATION),
         'multi': Ability('red', ranged.multi(), 0.5 / ranged.haste, 10, 'MS'),
         'arcane': Ability('green', ranged.arcane(), 0.1, 6, 'Ar'),
-        'raptor': Ability('sandybrown', melee.raptor(), 0.4, 6, 'MW'),
+        'raptor': Ability('sandybrown', melee.raptor(), 0.4, 6 - 0.4, 'MW'),
         'melee': Ability(
             'sandybrown', melee.auto(),
-            0.4, melee.weapon.speed / melee.haste, 'MW'
+            0.4, melee.weapon.speed / melee.haste - 0.4, 'MW'
         ),
         'autodelay': Ability('lightcoral', 0, 0), # for legend purposes only
     }

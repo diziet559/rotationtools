@@ -15,9 +15,9 @@ r.init_fig()
 r.melee.haste = 1.05 # drums
 r.ranged.haste = r.melee.haste * 1.2 * 1.15 # serpent + quiver
 r.change_haste()
-r.add_rotation('asmawsasAawsas')
+r.add_rotation('asmawsaswasAaws')
 r.complete_fig('BM French rotation with weaving')
-r.calc_dur(1)
+r.calc_dur()
 
 # %% BM, 1:1 weaving with hawk
 r = rotationtools.rotationplot('bm')
@@ -25,7 +25,7 @@ r.init_fig()
 r.melee.haste = 1.05 # drums
 r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 # serpent + quiver + hawk
 r.change_haste()
-r.add_rotation('asaswasas')
+r.add_rotation('aswas')
 r.complete_fig('BM 1:1 weaving with hawk')
 
 # %% BM, 1:1
@@ -89,6 +89,6 @@ r.init_fig()
 r.melee.haste = 1.05 # drums
 r.ranged.haste = r.melee.haste * 1.15 # quiver only
 r.change_haste()
-r.add_rotation('asmasAasasas')
+r.add_rotation('asmasasAasas')
 r.complete_fig()
 
