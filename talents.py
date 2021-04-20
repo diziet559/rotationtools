@@ -70,7 +70,8 @@ class Gear:
     crit_rating = 130
     hit_rating = 109
     haste_rating = 0
-    
+    t3pc = 4
+    d3pc = 4
     def load(self, s):
         if s=='sv':
             # https://seventyupgrades.com/set/vhxTGj5rtJavANR4AYjXZf
@@ -109,7 +110,7 @@ class Pet:
             (98 if (self.owner().raid.grp.sham or self.owner().raid.grp.enha) else 0)) \
             * (1.1 if buffs[6] else 1)
         agi = (self.agi + buffs[5] + 20) * (1.1 if buffs[6] else 1) # scroll of agi
-        m_ap = strength * 2 + 0.22 * owner_rap + buffs[1] + debuffs[1]
+        m_ap = strength * 2 + 0.22 * owner_rap + buffs[1] + debuffs[1] + (50 if self.owner().gear.t3pc>=4 else 0)
         crit = agi/25.6 + 2 * self.owner().talents.ferocity + buffs[3] + debuffs[3] - 0.6
         hit = self.owner().talents.animalHandler * 2 + buffs[2] + debuffs[2]
         atkspd = self.atkspd / (1 + self.owner().talents.serpentsSwiftness * 0.04) / (1.3 if self.cobraReflexes else 1)
@@ -247,8 +248,8 @@ class Character:
         mcrit = total_agi/40 + (self.gear.crit_rating + (0 if self.usingFlask else 20))/22.1 - 1.5 + self.talents.killerInstincts \
             + buffs[3] + debuffs[3]
         rcrit = mcrit + self.talents.mortalShots
-        r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0)
-        m_ap = self.gear.total_map - self.gear.agi + total_agi + buffs[1] + (120 if self.usingFlask else 0)
+        r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)
+        m_ap = self.gear.total_map - self.gear.agi + total_agi + buffs[1] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)
         r_ap = r_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[0]
         m_ap = m_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[1]
         #hit = self.gear.hit_rating/15.8 + self.talents.surefooted + debuffs[2]
