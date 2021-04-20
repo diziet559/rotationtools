@@ -118,6 +118,59 @@ class rotationplot:
         pet_dps = self.character.pet.dps()
         return (pet * pet_dps + self.total_damage / duration) * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
 
+    def statweights(self, pet_mod=1):
+        self.change_stats()
+        self.recalc()
+        base_dps = self.calc_dps(self.calc_dur(), pet_mod)
+        
+        # increase ap by 1 for ap weight
+        self.character.gear.total_rap = self.character.gear.total_rap + 1
+        self.character.gear.total_map = self.character.gear.total_map + 1
+        self.change_stats()
+        self.recalc()
+        ap_dps = self.calc_dps(self.calc_dur(), pet_mod)
+        
+        # also increase agi for agi weight, total ap includes agi already
+        self.character.gear.agi = self.character.gear.agi + 1
+        self.change_stats()
+        self.recalc()
+        agi_dps = self.calc_dps(self.calc_dur(), pet_mod)
+        
+        # undo ap and agi changes
+        self.character.gear.total_rap = self.character.gear.total_rap - 1
+        self.character.gear.total_map = self.character.gear.total_map - 1
+        self.character.gear.agi = self.character.gear.agi - 1
+        # increase crit rating by 1 for crit weight
+        self.character.gear.crit_rating = self.character.gear.crit_rating + 1
+        self.change_stats()
+        self.recalc()
+        crit_dps = self.calc_dps(self.calc_dur(), pet_mod)
+        
+        # undo crit rating
+        self.character.gear.crit_rating = self.character.gear.crit_rating - 1
+        self.change_stats()
+        # increase haste for haste rating weight
+        self.melee.haste = self.melee.haste * (1+1/15.8/100)
+        self.ranged.haste = self.ranged.haste * (1+1/15.8/100)
+        self.change_haste()
+        self.recalc()
+        haste_dps = self.calc_dps(self.calc_dur(), pet_mod)
+        
+        # calculate stat weights from dps values for each stat
+        ap_weight = ap_dps - base_dps
+        agi_weight = (agi_dps - base_dps)
+        crit_weight = (crit_dps - base_dps)
+        haste_weight = (haste_dps - base_dps)
+        
+        # return to old values
+        self.melee.haste = self.melee.haste / (1+1/15.8/100)
+        self.ranged.haste = self.ranged.haste / (1+1/15.8/100)
+        self.change_haste()
+        self.recalc()
+    
+        return base_dps, ap_weight, agi_weight, crit_weight, haste_weight
+        
+    
     def complete_fig(self, title=None):
         #self.ax.set_xlim(-0.25, 12)
         self.ax.set_ylim(0, 3)
