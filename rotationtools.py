@@ -114,8 +114,9 @@ class rotationplot:
             for ability in abilities.ABILITIES_WITH_CD
         ])
 
-    def calc_dps(self, duration):
-        return self.total_damage / duration * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
+    def calc_dps(self, duration, pet = 0):
+        pet_dps = self.character.pet.dps()
+        return (pet * pet_dps + self.total_damage / duration) * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
 
     def complete_fig(self, title=None):
         #self.ax.set_xlim(-0.25, 12)
@@ -128,7 +129,7 @@ class rotationplot:
         plt.legend(handles, labels, bbox_to_anchor=(1.005, 1), loc='upper left')
         duration = self.calc_dur()
         dps = self.calc_dps(duration)
-        petdps = self.character.pet.dps() * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
+        petdps = 1.0 * self.character.pet.dps() * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
         totaldps = dps + petdps
         rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=duration)
         plt.annotate(rota,(1.005,0.5), xycoords='axes fraction')
