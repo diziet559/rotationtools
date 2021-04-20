@@ -80,7 +80,7 @@ r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 * 1.3 # serpent + quiver + ha
 r.change_haste()
 for ability in r.abilities:
     r.abilities[ability].damage = r.abilities[ability].damage * 1.1
-r.add_rotation('asarasaasawasa')
+r.add_rotation('asawasa')
 r.complete_fig()
 
 # %% SV, short French rotation
