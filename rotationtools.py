@@ -28,7 +28,7 @@ class rotationplot:
     total_damage = 0
     remaining_armor = 6200 - 3075 - 610 - 800 - 600# base - iEA - FF - CoR - D3 proc always up
 
-    hawk_until = 0
+    hawk_until = -1
 
     ax = ()
     showlabels = 1 # set to true to show labels on all shotss
@@ -276,6 +276,11 @@ class rotationplot:
     def add_rotation(self, s):
         self.rotation_string = s
         for c in s:
+            if self.current_time>self.hawk_until and self.hawk_until>0:
+                self.ranged.haste = self.ranged.haste / 1.15 # un-proc imp hawk
+                self.change_haste()
+                self.hawk_until = -1
+
             if c=='a':
                 self.add_auto()
             elif c=='A':
@@ -289,8 +294,10 @@ class rotationplot:
             elif c=='w':
                 self.add_melee() # white hit
             elif c=='h':
-                self.ranged.haste = self.ranged.haste * 1.15 # manually proc imp hawk for testing
-                self.change_haste()
+                if self.current_time>=self.hawk_until:
+                    self.ranged.haste = self.ranged.haste * 1.15 # manually proc imp hawk for testing
+                    self.change_haste()
+                self.hawk_until = self.current_time + 12
 
 
 if __name__ == "__main__":
