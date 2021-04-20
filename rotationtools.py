@@ -290,6 +290,7 @@ class rotationplot:
                 self.add_melee() # white hit
             elif c=='h':
                 self.ranged.haste = self.ranged.haste * 1.15 # manually proc imp hawk for testing
+                self.change_haste()
 
 
 if __name__ == "__main__":
