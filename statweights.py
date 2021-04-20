@@ -1,20 +1,20 @@
 import rotationtools
 
-def getweights(r):
+def getweights(r, pet_mod=1):
     r.change_stats()
     r.recalc()
-    base_dps = r.calc_dps(r.calc_dur())
+    base_dps = r.calc_dps(r.calc_dur(), pet_mod)
     
     r.character.gear.total_rap = r.character.gear.total_rap + 1
     r.character.gear.total_map = r.character.gear.total_map + 1
     r.change_stats()
     r.recalc()
-    ap_dps = r.calc_dps(r.calc_dur())
+    ap_dps = r.calc_dps(r.calc_dur(), pet_mod)
     
     r.character.gear.agi = r.character.gear.agi + 1
     r.change_stats()
     r.recalc()
-    agi_dps = r.calc_dps(r.calc_dur())
+    agi_dps = r.calc_dps(r.calc_dur(), pet_mod)
     
     r.character.gear.total_rap = r.character.gear.total_rap - 1
     r.character.gear.total_map = r.character.gear.total_map - 1
@@ -22,7 +22,7 @@ def getweights(r):
     r.character.gear.crit_rating = r.character.gear.crit_rating + 1
     r.change_stats()
     r.recalc()
-    crit_dps = r.calc_dps(r.calc_dur())
+    crit_dps = r.calc_dps(r.calc_dur(), pet_mod)
     
     r.character.gear.crit_rating = r.character.gear.crit_rating - 1
     r.change_stats()
@@ -30,7 +30,7 @@ def getweights(r):
     r.ranged.haste = r.ranged.haste * (1+1/15.8/100)
     r.change_haste()
     r.recalc()
-    haste_dps = r.calc_dps(r.calc_dur())
+    haste_dps = r.calc_dps(r.calc_dur(), pet_mod)
 
     ap_weight = ap_dps - base_dps
     agi_weight = (agi_dps - base_dps)
