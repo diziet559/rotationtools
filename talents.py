@@ -141,7 +141,7 @@ class Pet:
         else:
             fi_uptime = 0
         
-        autohit_dps = mod_dmg * (1 + crit) / average_frenzied_atkspd
+        autohit_dps = mod_dmg * (1 - 0.25*0.35 + crit) / average_frenzied_atkspd
         skill_dps = self.specialAvgDmg * ((1+0.5*1) if self.family=='ravager' else 1) * (1 + crit) * dmg_mult / 1.5
         
         total_dps = (autohit_dps + skill_dps) * (1 + 0.01 * self.owner().talents.ferociousInspiration * fi_uptime)
@@ -212,7 +212,7 @@ class Raidsetup:
             if self.paladin>=2:
                 m_ap = m_ap + 264
                 r_ap = r_ap + 264
-        multiplier = multiplier * (1+0.03*0.8)**self.grp.bm
+        multiplier = multiplier * (1+0.03*0.95)**self.grp.bm
         if not pet:
             r_ap = r_ap + 155 # aspect of the hawk
         if pet:
@@ -223,7 +223,7 @@ class Character:
     gear = Gear()
     raid = Raidsetup()
     talents = Talentbuild()
-    usingFlask = 1 # elixier of major agility if not
+    usingFlask = 1 # elixir of major agility otherwise
     usingDrums = 0
     
     def __init__(self, spec):
@@ -254,7 +254,7 @@ class Character:
         #hit = self.gear.hit_rating/15.8 + self.talents.surefooted + debuffs[2]
         haste = (1 + self.gear.haste_rating/15.8/100)
         range_haste = haste * 1.15 * (1 + self.talents.serpentsSwiftness * 0.04)
-        multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.8)
+        multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.95)
         if ranged:
             return (damage.Weapon(83.3, 2.9), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
         else:
