@@ -32,7 +32,7 @@ r.complete_fig('BM 1:1 weaving with hawk')
 r = rotationtools.rotationplot('bm')
 r.init_fig()
 r.melee.haste = 1.05 # drums
-r.ranged.haste = r.melee.haste * 1.2 * 1.15 # serpent + quiver
+r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 # serpent + quiver + hawk
 r.change_haste()
 r.add_rotation('asas')
 r.complete_fig('BM 1:1')

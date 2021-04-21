@@ -19,7 +19,7 @@ if __name__ == "__main__":
         for rot in rotations:
             x = []
             dps = []
-            for h in range(0,251,1):
+            for h in range(200,351,1):
                 x.append(h)
                 rot.melee_haste = (1+h/100)
                 rot.ranged.haste = (1.2 if spec=='bm' else 1) * 1.15 * (1+h/100)
@@ -71,7 +71,7 @@ if __name__ == "__main__":
             haste = 1.05
             if (t % 600)>=5 and (t % 600)<45:
                 haste = haste * 1.3 # bloodlust
-            if (t % 180)>=5 and (t % 180)<24:
+            if (t % 180)>=5 and (t % 180)<20:
                 haste = haste * 1.4 # rapid fire
             if (t % 120)>=5 and (t % 120)<25:
                 haste = haste * 1.25 # haste pot

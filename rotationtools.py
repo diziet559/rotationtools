@@ -30,7 +30,7 @@ class rotationplot:
 
     hawk_until = -1
 
-    ax = ()
+    ax = None
     showlabels = 1 # set to true to show labels on all shotss
     rot_stats = 'Ranged speed: {speed:.1f}\nRanged haste: {haste:.2f}\nDuration: {dur:.2f}'
     dps_stats = 'AP: {rap:.0f} (r)/ {map:.0f} (m)\nCrit: {crit:.1f}%\nDPS: {dps:.0f} / Pet: {petdps:.0f}\nTotal: {totaldps:.0f}'
@@ -63,7 +63,7 @@ class rotationplot:
         for ability in self.abilities.values():
             ability.reset()
 
-        self.ax = 0
+        self.ax = None
     
     def setTalents(self, s):
         self.talents.load(s)
@@ -294,7 +294,7 @@ class rotationplot:
             elif c=='w':
                 self.add_melee() # white hit
             elif c=='h':
-                if self.current_time>=self.hawk_until:
+                if self.current_time>self.hawk_until:
                     self.ranged.haste = self.ranged.haste * 1.15 # manually proc imp hawk for testing
                     self.change_haste()
                 self.hawk_until = self.current_time + 12
