@@ -20,7 +20,7 @@ as this is how haste is applied in World of Warcraft.
 For BM hunters, the two sources of haste apply multiplicatively, so their eWS is
 
 ```
-eWS = WS / 1.15 / 1.2 = eWS / 1.38
+eWS = WS / 1.15 / 1.2 = WS / 1.38
 ```
 
 In both cases, `WS` is the original weapon swing time as given in the weapons tooltip.
@@ -33,11 +33,15 @@ During a fight, TBC hunters use different rotations depending on their current h
 
 Most of the time, we will have much lower haste. This is okay, we can still do top notch dps without this excessive stacking.
 
+#### BM rotations over haste
+
 Here is an overview of available rotations - which will be explained further on - and their relative dps at different haste levels:
 
 ![rotations_bm](img/rotations_bm.png)
 
 Drums of battle are only included when a haste potion is used to illustrate the highest levels of haste achievable in phase 1. When using drums of battle at all times in our group, all of the lower haste points move slightly to the right, increasing our dps. This does not change the rotation we should use at any of these common haste points.
+
+#### SV rotations over haste
 
 For survival hunters, the graph looks slightly different due to lower base haste, and as a result the effective weapon swing is always slower:
 
@@ -51,13 +55,13 @@ Depending on the phase and current gear, as a survival hunter we may or may not 
 
 All basic rotations use only steady shot for illustration purposes, but in practice should use multi shot instead of a steady shot whenever it is off CD to slightly improve dps.
 
-###### 2:1
+#### 2:1
 
 Casting two steady shots and one auto shot alternatingly. This is lower dps than the complex rotation for any level of haste, and shouldn't be used. Ever.
 
 Because we don't use, we don't have to draw it either.
 
-###### 1:1
+#### 1:1
 
 
 
@@ -71,13 +75,13 @@ This is the most simple rotation possible and can be achieved by using a macro o
 
 This rotation is used at effective weapon swings from 1.3 to 1.6 seconds, where the GCD and auto shot swing line up almost exactly.
 
-###### 1:2
+#### 1:2
 
 ![bm_one_two](img/bm_one_two.png)
 
 At high enough haste, we can let two auto shots through during the GCD of one steady shot.
 
-###### 1:3
+#### 1:3
 
 ![bm_one_three](img/bm_one_three.png)
 
@@ -85,25 +89,25 @@ At even more haste, we can let a third auto shot through between casting steadie
 
 ### Complex rotations
 
-###### The short French rotation (5:4:1:1)
+#### The short French rotation (5:4:1:1)
 
 ![sv_french](img/sv_french.png)
 
 This only ever appears for survival hunters without the 20% haste out of the BM talent tree.
 
-###### The French rotation (5:5:1:1)
+#### The French rotation (5:5:1:1)
 
 ![bm_french](img/bm_french.png)
 
 The standard rotation for BM hunters and survival hunter with improved Aspect of the Hawk or DST procs active. Compared to the 1:1 rotation, it slightly delays the auto shots to fit additional shots in. The additional shots are only multi and arcane shots due to their lower cast time.
 
-###### The long French rotation (5:6:1:1)
+#### The long French rotation (5:6:1:1)
 
 ![bm_longfrench](img/bm_longfrench.png)
 
 A slight dps increase over the standard French rotation with Aspect of the Hawk proc for BM hunters is using multi and arcane together to fit just one additional shot in between your autos, instead of the two additional shot of the standard French rotation.
 
-###### The skipping rotation (5:9:1:1)
+#### The skipping rotation (5:9:1:1)
 
 ![bm_skipping](img/bm_skipping.png)
 
@@ -113,13 +117,13 @@ This is a variant of the 1:1 rotation that uses the shorter cast time of multi a
 
 Like the basic rotations, the illustrations here use only steady shots, that should be replaced with multi shots whenever possible.
 
-###### 2:3
+#### 2:3
 
 ![bm_two_three](img/bm_two_three.png)
 
 This rotation alternates cycles of 1:1 and 1:2 to better match GCD and weapon swing.
 
-###### 2:5
+#### 2:5
 
 ![bm_two_five](img/bm_two_five.png)
 
@@ -133,7 +137,7 @@ Rotations for melee weaving will be added here soon, there will most likely be f
 
 ### Acknowledgement
 
-This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegaegh, Chitzen, Kanja, Tragnar, BradBlondeBeard, and Bouk who has gone missing recently. This applies to this guide and the library as well.
+This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegeagh, Chitzen, Kanja, Tragnar, BradBlondeBeard, Veramos, Ocisly, Wdwune, and Bouk who has gone missing recently. This applies to this guide and the library as well.
 
 ### Resources
 
