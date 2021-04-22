@@ -58,6 +58,11 @@ Depending on the phase and current gear, as a survival hunter we may or may not 
 
 ### Basic rotations
 
+- [2:1](#21)
+- [1:1](#11)
+- [1:2](#12)
+- [1:3](#13)
+
 All basic rotations use only steady shot for illustration purposes, but in practice should use multi shot instead of a steady shot whenever it is off CD to slightly improve dps.
 
 #### 2:1
@@ -94,6 +99,11 @@ At even more haste, we can let a third auto shot through between casting steadie
 
 ### Complex rotations
 
+- [The short French rotation (5:4:1:1)](#the-short-french-rotation-5411)
+- [The French rotation (5:5:1:1)](#the-french-rotation-5511)
+- [The long French rotation (5:6:1:1)](#the-long-french-rotation-5611)
+- [The skipping rotation (5:9:1:1)](#the-skipping-rotation-5911)
+
 #### The short French rotation (5:4:1:1)
 
 ![sv_french](img/sv_french.png)
@@ -119,6 +129,9 @@ A slight dps increase over the standard French rotation with Aspect of the Hawk 
 This is a variant of the 1:1 rotation that uses the shorter cast time of multi and arcane shot to let another auto shot through with each of these casts, resulting in 7 casts for every 9 auto shots. This is used for BM hunters with Rapid fire and Hawk proc or Rapid fire and Bloodlust up (shown here).
 
 ### Combined rotations
+
+- [2:3](#23)
+- [2:5](#25)
 
 Like the basic rotations, the illustrations here use only steady shots, that should be replaced with multi shots whenever possible.
 
