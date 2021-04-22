@@ -1,13 +1,18 @@
+# TBC Hunter rotation overview
+
 ### Contents
 
-- Hunter rotations and haste
-- Library usage
+- [Hunter rotations and haste](#hunter-rotations-and-haste)
+- [Rotation details](#rotation-details)
+- [Melee weaving](#melee-weaving)
+- [Gear used](#gear-used)
+- [Library usage](#library-usage)
 
-# Hunter rotations and haste
+## Hunter rotations and haste
 
 In TBC, hunters will be running different rotations based on their current haste level or effective weapon swing. There are different concepts to visualize this: While the most frequently encountered notation is that of effective weapon swing (eWS) which can also be observed intuitively, using the total haste can be advantageous in some situations.
 
-## Static haste
+### Static haste
 
 In early TBC, there will be no static haste on gear. Our only source for haste are 15% from quiver and possibly 20% from the BM talent Serpent's Swiftness. Thus, survival hunters start at 15% total haste, which means that they get 15% additional attack during a particular time. Their eWS is
 
@@ -27,7 +32,7 @@ In both cases, `WS` is the original weapon swing time as given in the weapons to
 
 In most of TBC, hunters will be using weapons with 3.0 tooltip speed. The only exception is P1, where the best weapon (Sunfury Bow of the Phoenix off of Prince Malchezaar) has a 2.9 speed. The best preraid weapon, Wrathtide Longbow, also has a 3.0 speed as most later weapons.
 
-## Changing rotations
+### Changing rotations
 
 During a fight, TBC hunters use different rotations depending on their current haste value or effective weapon swing. Stacking all available haste effects, hunter can achieve 3.36 additional haste for a total of 4.64 with BM talents. This pushes the eWS down to 0.62 seconds. This relies on having improved Aspect of the Hawk and the proc of Dragon Spine Trophy up during your own stacked haste effects from Bloodlust, Rapid Fire, Drums of Battle and Haste Potion. This can only happen for a maximum of 10 seconds (shortest duration of these effects) every 10 minutes (longest cd of these effects), but we will be doing huge dps during this time.
 
@@ -129,11 +134,27 @@ This rotation alternates cycles of 1:1 and 1:2 to better match GCD and weapon sw
 
 This combines cycles of 1:2 and 1:3 at very high haste - for phase 1, this requires having improved Aspect of the Hawk *and* DST procs during Bloodlust, Rapid fire, drums and haste potion.
 
-### Melee weaving
+## Melee weaving
 
 Although it appears like we have less time at high levels of haste, weaving actually because easier in TBC mostly due to the removal of the deadzone. When positioned at minimal shooting range all it takes is the tiniest of steps to get into melee range - weaves can be done as quickly as 0.2 seconds for stepping in, using Raptor strike or a melee white hit, and stepping out again. Depending on habit, backpedaling can be a viable mode of movement here because the distance to travel is just so low. Even slow weavers will manage to stay below 0.4 seconds weaving time, so at even at all extremely stacked haste it does not interfere with auto shots.
 
 Rotations for melee weaving will be added here soon, there will most likely be fewer different rotations when weaving.
+
+## Gear used
+
+The rotations and dps numbers presented here are based on optimal gear for phase 1, with the slight change that all sets use two-handed weapons to enable melee weaving. For fights where it is impossible to weave at all, this may be a slight disadvantage due to the fact that fist weapons can use weightstones that give melee and ranged critical strike rating, whereas all reasonable two-handed weapons can only use sharpening stones that give only melee critical strike rating. All sharpening and weightstones also increase weapon damage for melee and ranged combat, although weapon damage does not increase steady shot damage. Obviosly, with two-handed weapons we can also only use one of these stones, whereas with two one-handed weapons we can use two such stones.
+
+### The sets and their stats
+
+- [BM P1 BiS set](https://seventyupgrades.com/set/4dB2vLVYvjV8BENUcoNNdx)
+  - Raw stats: 1823 AP (607 Agi), 21.48% Crit, 6.09% Hit 
+  - With talents & buffs & debuffs: 3063 AP, 39.79% Crit, hitcapped
+- [SV P1 BiS set](https://seventyupgrades.com/set/bnmrrPa2anXUKAhDgNgR8j)
+  - Raw stats: 1866 AP (690 Agi), 19.12% Crit, 3.61% Hit
+  - With talents & buffs & debuffs: 3375 AP, 44.33% Crit, hitcapped
+  - Fully buffed this set has 1101 agility for a bonus of 275 AP from Expose weakness
+
+There is also an [overview of buffs and debuffs](buffs) that we can expect in a raid environment.
 
 ### Acknowledgement
 
@@ -144,6 +165,8 @@ This overview would have been impossible to complete without others, especially 
 - [Bouk's rotation guide](https://boukx.github.io/rotations/)
 - [Kanja's TBC Hunter guide (French)](https://chasseur-bc.jimdofree.com/), the reason it is called the "French" rotation
 - [BradBlondeBeard's Burning Book of pet damage taken](https://docs.google.com/spreadsheets/d/1p7vucH8lt0Gjyz-Q75sILextXvu5ZRKt-nZ_MK7e7dE) - can also be used as a guideline of where to weave
+- [Veramos' gear comparison sheet](https://docs.google.com/spreadsheets/d/17z2w8rrc_nW4TqLkxy0VzHLpkbCcYGtQFGBV3_8FZjs)
+- [Veramos' gearing video](https://www.youtube.com/watch?v=RVdBciAUknc) - there are more than just this one
 
 # Library usage
 
