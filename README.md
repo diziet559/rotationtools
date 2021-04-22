@@ -1,7 +1,7 @@
 ### Contents
 
-- [Hunter rotations and haste](#Hunter rotations and haste)
-- [Library usage](#Library usage)
+- Hunter rotations and haste
+- Library usage
 
 # Hunter rotations and haste
 
