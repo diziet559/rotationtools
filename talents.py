@@ -102,6 +102,22 @@ class Pet:
     def dmgBonus(self):
         if self.family=='ravager':
             return 1.1
+        elif self.family=='cat':
+            return 1.1
+        elif self.family=='windserpent':
+            return 1.07
+        elif self.family=='sporebat':
+            return 1.00
+    def specialDmg(self):
+        if self.family=='ravager':
+            avgDmg = 49 * (1 + 0.5 * 1) # gore has 50% chance for double dmg
+        elif self.family=='cat':
+            avgDmg = 65 # claw
+        elif self.family=='windserpent':
+            avgDmg = 108+14 # lightning breath
+        elif self.family=='sporebat':
+            avgDmg = 0 # no special attack
+        return avgDmg
     def buffedStats(self):
         owner_rap = self.owner().buffedStats(1)[2]
         buffs = self.owner().raid.buffs()
@@ -120,6 +136,7 @@ class Pet:
         stats = self.buffedStats()
         dmg_mult = (1 + 0.04 * self.owner().talents.unleashedFury) * self.dmgBonus() * stats[4] * 1.25 # happiness modifier
         mod_dmg = self.avgDmg + stats[0]/14*self.atkspd * dmg_mult
+        hit = min(1, 0.91 + stats[2]/100)
         crit = stats[1] / 100
         hasted_attack = stats[3]
         if self.owner().talents.frenzy>0:
@@ -142,8 +159,11 @@ class Pet:
         else:
             fi_uptime = 0
         
-        autohit_dps = mod_dmg * (1 - 0.25*0.35 + crit) / average_frenzied_atkspd
-        skill_dps = self.specialAvgDmg * ((1+0.5*1) if self.family=='ravager' else 1) * (1 + crit) * dmg_mult / 1.5
+        autohit_dps = mod_dmg * (hit - 0.25*0.35 + crit) / average_frenzied_atkspd
+        if self.family=='windserpent':
+            skill_dps = self.specialDmg() * (0.83 + 0.13 * 0.5) * dmg_mult / 1.5 # low hit, low crit, low crit bonus
+        else:
+            skill_dps = self.specialDmg() * (hit + crit) * dmg_mult / 1.5
         
         total_dps = (autohit_dps + skill_dps) * (1 + 0.01 * self.owner().talents.ferociousInspiration * fi_uptime)
         return total_dps
