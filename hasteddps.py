@@ -19,7 +19,7 @@ if __name__ == "__main__":
         for rot in rotations:
             x = []
             dps = []
-            for h in range(200,351,1):
+            for h in range(100,351,1):
                 x.append(h)
                 rot.melee_haste = (1+h/100)
                 rot.ranged.haste = (1.2 if spec=='bm' else 1) * 1.15 * (1+h/100)
