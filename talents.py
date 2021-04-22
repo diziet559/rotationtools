@@ -277,7 +277,7 @@ class Character:
         range_haste = haste * 1.15 * (1 + self.talents.serpentsSwiftness * 0.04)
         multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.95)
         if ranged:
-            return (damage.Weapon(83.3, 2.9), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
+            return (damage.Weapon(83.3, 3.0), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
         else:
             return (damage.Weapon(118.6, 3.7), m_ap, mcrit, haste, multiplier)
         

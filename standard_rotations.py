@@ -58,10 +58,10 @@ r.calc_dur()
 # %% BM, 1:1 weaving with hawk
 r = rotationtools.rotationplot('bm')
 r.init_fig()
-r.melee.haste = 1.05 # drums
+r.melee.haste = 1.05 * 1.3 * 1.3# drums
 r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 # serpent + quiver + hawk
 r.change_haste()
-r.add_rotation('aswas')
+r.add_rotation('asawasasawas')
 r.complete_fig('BM 1:1 weaving with hawk')
 
 # %% BM, 1:1
@@ -114,6 +114,15 @@ for ability in r.abilities:
     r.abilities[ability].damage = r.abilities[ability].damage * 1.1
 r.add_rotation('asaasa')
 r.complete_fig('BM 1:2 at max haste')
+
+# %% BM, max haste, 1:2
+r = rotationtools.rotationplot('bm')
+r.init_fig()
+r.melee.haste = 1.3 * 2 # bloodlust + (hastepot+drums) + more
+r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 * 1.3 # serpent + quiver + hawk proc + rapidfire
+r.change_haste()
+r.add_rotation('asaaasaa')
+r.complete_fig('BM 1:3')
 
 # %% BM, max haste, 1:2 with weaving
 r = rotationtools.rotationplot('bm')

@@ -3,8 +3,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 if __name__ == "__main__":
-    names = ['as', 'asa', 'asaa', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
     spec = 'bm'
+    weaving = 1
+    if weaving:
+        names = ['asmawsaswasAaws', 'asasw', 'asawas', 'asawasa']
+    else:
+        names = ['as', 'asa', 'asaa', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
     labels = []
     rotations = []
     for n in names:

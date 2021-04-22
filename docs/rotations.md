@@ -72,6 +72,12 @@ This rotation is used at effective weapon swings from 1.3 to 1.6 seconds, where 
 
 At high enough haste, we can let two auto shots through during the GCD of one steady shot.
 
+###### 1:3
+
+![bm_one_three](img/bm_one_three.png)
+
+At even more haste, we can let a third auto shot through between casting steadies. Sadly, these levels are out of reach an phase 1, and can only be reached with static haste gear in later phases.
+
 ### Complex rotations
 
 ###### The short French rotation (5:4:1:1)
