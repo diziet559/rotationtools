@@ -35,13 +35,13 @@ Most of the time, we will have much lower haste. This is okay, we can still do t
 
 Here is an overview of available rotations - which will be explained further on - and their relative dps at different haste levels:
 
-![rotations_bm](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/rotations_bm.png)
+![rotations_bm](img/rotations_bm.png)
 
 Drums of battle are only included when a haste potion is used to illustrate the highest levels of haste achievable in phase 1. When using drums of battle at all times in our group, all of the lower haste points move slightly to the right, increasing our dps. This does not change the rotation we should use at any of these common haste points.
 
 For survival hunters, the graph looks slightly different due to lower base haste, and as a result the effective weapon swing is always slower:
 
-![rotations_sv](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/rotations_sv.png)
+![rotations_sv](img/rotations_sv.png)
 
 Depending on the phase and current gear, as a survival hunter we may or may not be specced into improved aspect of the hawk, thus this effect may not apply at all.
 
@@ -61,7 +61,7 @@ Because we don't use, we don't have to draw it either.
 
 
 
-![bm_one_one](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_one_one.png)
+![bm_one_one](img/bm_one_one.png)
 
 This is the most simple rotation possible and can be achieved by using a macro of the form
 
@@ -73,13 +73,13 @@ This rotation is used at effective weapon swings from 1.3 to 1.6 seconds, where 
 
 ###### 1:2
 
-![bm_one_two](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_one_two.png)
+![bm_one_two](img/bm_one_two.png)
 
 At high enough haste, we can let two auto shots through during the GCD of one steady shot.
 
 ###### 1:3
 
-![bm_one_three](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_one_three.png)
+![bm_one_three](img/bm_one_three.png)
 
 At even more haste, we can let a third auto shot through between casting steadies. Sadly, these levels are out of reach an phase 1, and can only be reached with static haste gear in later phases.
 
@@ -87,25 +87,25 @@ At even more haste, we can let a third auto shot through between casting steadie
 
 ###### The short French rotation (5:4:1:1)
 
-![sv_french](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/sv_french.png)
+![sv_french](img/sv_french.png)
 
 This only ever appears for survival hunters without the 20% haste out of the BM talent tree.
 
 ###### The French rotation (5:5:1:1)
 
-![bm_french](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_french.png)
+![bm_french](img/bm_french.png)
 
 The standard rotation for BM hunters and survival hunter with improved Aspect of the Hawk or DST procs active. Compared to the 1:1 rotation, it slightly delays the auto shots to fit additional shots in. The additional shots are only multi and arcane shots due to their lower cast time.
 
 ###### The long French rotation (5:6:1:1)
 
-![bm_longfrench](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_longfrench.png)
+![bm_longfrench](img/bm_longfrench.png)
 
 A slight dps increase over the standard French rotation with Aspect of the Hawk proc for BM hunters is using multi and arcane together to fit just one additional shot in between your autos, instead of the two additional shot of the standard French rotation.
 
 ###### The skipping rotation (5:9:1:1)
 
-![bm_skipping](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_skipping.png)
+![bm_skipping](img/bm_skipping.png)
 
 This is a variant of the 1:1 rotation that uses the shorter cast time of multi and arcane shot to let another auto shot through with each of these casts, resulting in 7 casts for every 9 auto shots. This is used for BM hunters with Rapid fire and Hawk proc or Rapid fire and Bloodlust up (shown here).
 
@@ -115,19 +115,24 @@ Like the basic rotations, the illustrations here use only steady shots, that sho
 
 ###### 2:3
 
-![bm_two_three](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_two_three.png)
+![bm_two_three](img/bm_two_three.png)
 
 This rotation alternates cycles of 1:1 and 1:2 to better match GCD and weapon swing.
 
 ###### 2:5
 
-![bm_two_five](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/bm_two_five.png)
+![bm_two_five](img/bm_two_five.png)
 
 This combines cycles of 1:2 and 1:3 at very high haste - for phase 1, this requires having improved Aspect of the Hawk *and* DST procs during Bloodlust, Rapid fire, drums and haste potion.
 
 ### Acknowledgement
 
 This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegaegh, Chitzen, Kanja, Tragnar, and Bouk who has gone missing recently. This applies to this guide and the library as well.
+
+### Resources
+
+- [Bouk's rotation guide]([TBC Shot Rotations | rotations (boukx.github.io)](https://boukx.github.io/rotations/))
+- [Kanja's TBC Hunter guide (French)](https://chasseur-bc.jimdofree.com/), the reason it is called the "French" rotation
 
 # Library usage
 
