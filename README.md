@@ -125,14 +125,21 @@ This rotation alternates cycles of 1:1 and 1:2 to better match GCD and weapon sw
 
 This combines cycles of 1:2 and 1:3 at very high haste - for phase 1, this requires having improved Aspect of the Hawk *and* DST procs during Bloodlust, Rapid fire, drums and haste potion.
 
+### Melee weaving
+
+Although it appears like we have less time at high levels of haste, weaving actually because easier in TBC mostly due to the removal of the deadzone. When positioned at minimal shooting range all it takes is the tiniest of steps to get into melee range - weaves can be done as quickly as 0.2 seconds for stepping in, using Raptor strike or a melee white hit, and stepping out again. Depending on habit, backpedaling can be a viable mode of movement here because the distance to travel is just so low. Even slow weavers will manage to stay below 0.4 seconds weaving time, so at even at all extremely stacked haste it does not interfere with auto shots.
+
+Rotations for melee weaving will be added here soon, there will most likely be fewer different rotations when weaving.
+
 ### Acknowledgement
 
-This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegaegh, Chitzen, Kanja, Tragnar, and Bouk who has gone missing recently. This applies to this guide and the library as well.
+This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegaegh, Chitzen, Kanja, Tragnar, BradBlondeBeard, and Bouk who has gone missing recently. This applies to this guide and the library as well.
 
 ### Resources
 
-- [Bouk's rotation guide]([TBC Shot Rotations | rotations (boukx.github.io)](https://boukx.github.io/rotations/))
+- [Bouk's rotation guide](https://boukx.github.io/rotations/)
 - [Kanja's TBC Hunter guide (French)](https://chasseur-bc.jimdofree.com/), the reason it is called the "French" rotation
+- [BradBlondeBeard's Burning Book of pet damage taken](https://docs.google.com/spreadsheets/d/1p7vucH8lt0Gjyz-Q75sILextXvu5ZRKt-nZ_MK7e7dE) - can also be used as a guideline of where to weave
 
 # Library usage
 
