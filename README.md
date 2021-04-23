@@ -241,5 +241,6 @@ This overview would have been impossible to complete without others, especially 
 - [Kanja's TBC Hunter guide (French)](https://chasseur-bc.jimdofree.com/), the reason it is called the "French" rotation
 - [BradBlondeBeard's Burning Book of pet damage taken](https://docs.google.com/spreadsheets/d/1p7vucH8lt0Gjyz-Q75sILextXvu5ZRKt-nZ_MK7e7dE) - can also be used as a guideline of where to weave
 - [WatchYourSixx - Weaving on target dummy](https://www.twitch.tv/watchyoursixx/clip/FrailInventiveLarkSquadGoals-RdjmoEbMLQmpvszv) in TBC Beta
+- [WatchYourSixx - Weaving on DM:T ghost](https://www.twitch.tv/watchyoursixx/clip/EphemeralTriangularAntelopePeanutButterJellyTime-VzsoK3UXd1V9ebul) in TBC Beta
 - [Veramos' gear comparison sheet](https://docs.google.com/spreadsheets/d/17z2w8rrc_nW4TqLkxy0VzHLpkbCcYGtQFGBV3_8FZjs)
 - [Veramos' gearing video](https://www.youtube.com/watch?v=RVdBciAUknc) - there are more than just this one
