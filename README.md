@@ -149,9 +149,53 @@ This combines cycles of 1:2 and 1:3 at very high haste - for phase 1, this requi
 
 ## Melee weaving
 
-Although it appears like we have less time at high levels of haste, weaving actually because easier in TBC mostly due to the removal of the deadzone. When positioned at minimal shooting range all it takes is the tiniest of steps to get into melee range - weaves can be done as quickly as 0.2 seconds for stepping in, using Raptor strike or a melee white hit, and stepping out again. Depending on habit, backpedaling can be a viable mode of movement here because the distance to travel is just so low. Even slow weavers will manage to stay below 0.4 seconds weaving time, so at even at all extremely stacked haste it does not interfere with auto shots.
+Although it appears like we have less time at high levels of haste, weaving actually because easier in TBC mostly due to the removal of the deadzone. When positioned at minimal shooting range all it takes is the tiniest of steps to get into melee range - weaves can be done as quickly as 0.2 seconds for stepping in, using Raptor strike or a melee white hit, and stepping out again. Depending on habit, backpedaling can be a viable mode of movement here because the distance to travel is just so low. Even slow weavers will manage to stay below 0.4 seconds weaving time, so at even at extremely stacked haste it does not interfere with auto shots. An example video of weaving in the TBC Beta by Sixx can be found [in the resources section](#resources).
 
-Rotations for melee weaving will be added here soon, there will most likely be fewer different rotations when weaving.
+There will be situations where weaving will not be possible at specific phases of a fight or even for the whole fight due to boss mechanics. In such situations, it may be beneficial to have a ranged-only set without the two-handed weapon, given that better one-handed weapons are available. A first idea for where to weave can be found in the pet damage taken guide [in the resources section](#resources).
+
+With added weaving choosing the right rotation becomes a 2-dimensional problem as we now have to care about both melee and ranged haste. We will focus first on adding all ranged-only haste effects and general haste effects later. This means that we prioritize ranged damage over melee weaving.
+
+#### Melee weaving rotations
+
+![rotations_weaving_bm](img/rotations_weaving_bm.png)
+
+The dotted lines show non-weaving rotation described above, the weaving rotations will be shown in detail further on. The rotation shown here as 2:2 1w is actually a 1:1 rotation with a weave added after every second auto shot. This is due to the fact that quiver, BM talent haste and improved Aspect of the Hawk yields just the right amount of haste to push a 3.0 ranged weapon to exactly have the eWS of a 3.7 nominal speed melee weapon. Here is the one deviation from the diagram above:
+
+*If we have no ranged-only haste effects other than improved Aspect, **and** we have one significant general haste effect (so anything but drums), it is better to do 1:1 with weaving (2:2 1w)*. This reaches its maximum dps with improved Aspect and Bloodlust or DST up, which should be a quite common scenario.
+
+#### French weaving (5:5:1:1 3w)
+
+![bm_french_weaving](img/bm_french_weaving.png)
+
+Use with no haste effect other than Drums of Battle. Do not use under haste.
+
+This is only used with no haste effects or drums only and scales poorly with drums haste, as the rotation is almost gcd-capped and cannot be done much faster. The weaves should alternate between Raptor Strike and melee white hits.
+
+#### 1:1 half-weave (2:2 1w)
+
+![bm_weaving_oneone](img/bm_weaving_oneone.png)
+
+Use with and either DST proc or Bloodlust, optionally improved Aspect of the Hawk and Drums. Also use with improved Aspect of the Hawk only.
+
+This rotation has a 99% auto efficiency for a 2.9 tooltip speed ranged weapon, and 100% weaving efficiency - with a 3.0 speed bow these values turn around. The shots and melee hits almost perfectly align before this rotation gcd-caps at 25% additional haste from a DST proc or Bloodlust . In this range this is a very simple and efficient rotation, although it is slightly below French weaving without any haste.
+
+#### 6:9:1:1 3w
+
+![bm_weaving_6911](img/bm_weaving_6911.png)
+
+Use with Rapid Fire, Rapid Fire and Drums of Battle or Rapid Fire and improved Aspect of the Hawk. 
+
+#### 6:11:1:1 3w
+
+![bm_weaving_61111](img/bm_weaving_61111.png)
+
+Use with Rapid Fire, improved Aspect of the Hawk and Drums of Battle, or Rapid Fire and Bloodlust (Drums optional).
+
+#### 3:7 3w
+
+![bm_weaving_37](img/bm_weaving_37.png)
+
+This is the maximum haste rotation for weaving in phase 1. Use this with at least Rapid Fire, Bloodlust, and improved Aspect of the Hawk, or eWS below 0.94. The example is drawn for an eWS of 0.7.
 
 ## Gear used
 
@@ -167,17 +211,24 @@ The rotations and dps numbers presented here are based on optimal gear for phase
   - With talents & buffs & debuffs: 3375 AP, 44.33% Crit, hitcapped
   - Fully buffed this set has 1101 agility for a bonus of 275 AP from Expose weakness
 
-There is also an [overview of buffs and debuffs](buffs) that we can expect in a raid environment.
+There is also an [overview of buffs and debuffs](buffs) that we can expect in a raid environment. For more info on gear, see also Veramos' sheet and videos [in the resources section](#resources).
+
+### Stat weights
+
+Stat weights are useful to compare individual items that do not greatly change the balance of stats. They are not useful for comparing hugely different sets and can be misleading in such situations. Ideally, each set should be simulated individually. In addition, stat weights can and do change depending on the buffs we have.
+
+With this caveat, stat weights can be calculated for the sets shown here.
 
 ### Acknowledgement
 
-This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegeagh, Chitzen, Kanja, Tragnar, BradBlondeBeard, Veramos, Ocisly, Wdwune, and Bouk who has gone missing recently. This applies to this guide and the library as well.
+This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegeagh, Chitzen, Kanja for inventing the French rotation, Tragnar, BradBlondeBeard, Veramos for gear choices, Ocisly for pushing survival, Wdwune for contributing to the code, Antiserum for discussing weaving rotations, Sixx for weaving, and Bouk who has gone missing recently. This applies to this guide and the library as well.
 
 ### Resources
 
 - [Bouk's rotation guide](https://boukx.github.io/rotations/)
 - [Kanja's TBC Hunter guide (French)](https://chasseur-bc.jimdofree.com/), the reason it is called the "French" rotation
 - [BradBlondeBeard's Burning Book of pet damage taken](https://docs.google.com/spreadsheets/d/1p7vucH8lt0Gjyz-Q75sILextXvu5ZRKt-nZ_MK7e7dE) - can also be used as a guideline of where to weave
+- [WatchYourSixx - Weaving on target dummy](https://www.twitch.tv/watchyoursixx/clip/FrailInventiveLarkSquadGoals-RdjmoEbMLQmpvszv) in TBC Beta
 - [Veramos' gear comparison sheet](https://docs.google.com/spreadsheets/d/17z2w8rrc_nW4TqLkxy0VzHLpkbCcYGtQFGBV3_8FZjs)
 - [Veramos' gearing video](https://www.youtube.com/watch?v=RVdBciAUknc) - there are more than just this one
 
