@@ -85,8 +85,8 @@ r.calc_dur()
 # %% BM, 1:1 weaving with hawk
 r = rotationtools.rotationplot('bm')
 r.init_fig()
-r.melee.haste = 1.05 # drums
-r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.#15 # serpent + quiver + hawk
+r.melee.haste = 1.3 # drums
+r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 # serpent + quiver + hawk
 r.change_haste()
 r.add_rotation('asasw')
 r.complete_fig('BM 1:1 weaving with hawk')
@@ -178,19 +178,19 @@ r.change_haste()
 r.add_rotation('asaaasaa')
 r.complete_fig('BM 1:3')
 
-# %% BM, max haste, 1:2 with weaving
+# %% BM, max haste, 3:7 with weaving
 r = rotationtools.rotationplot('bm')
 r.init_fig()
 r.character.gear.total_rap = r.character.gear.total_rap + 278
 r.character.gear.total_map = r.character.gear.total_map + 278
 r.change_stats()
-r.melee.haste = 1.3 * 1.55 # bloodlust + (hastepot+drums)
+r.melee.haste = 1.3 * 1.55 # bloodlust + (hastepot+drums+DST)
 r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 * 1.3 # serpent + quiver + hawk proc + rapidfire
 r.change_haste()
 for ability in r.abilities:
     r.abilities[ability].damage = r.abilities[ability].damage * 1.1
-r.add_rotation('asawasaawasa')
-r.complete_fig()
+r.add_rotation('sawasaawasaa')
+r.complete_fig('BM 3:7 with weaving at max haste')
 
 # %% SV, short French rotation
 r = rotationtools.rotationplot('sv')
@@ -199,6 +199,24 @@ r.melee.haste = 1.05 # drums
 r.ranged.haste = r.melee.haste * 1.15 # quiver only
 r.change_haste()
 r.add_rotation('asmasasAass')
+r.complete_fig()
+
+# %% SV, French rotation
+r = rotationtools.rotationplot('sv')
+r.init_fig()
+r.melee.haste = 1.05 * 1.3 # drums
+r.ranged.haste = r.melee.haste * 1.15 # quiver only
+r.change_haste()
+r.add_rotation('as')
+r.complete_fig()
+
+# %% SV, French rotation
+r = rotationtools.rotationplot('sv')
+r.init_fig()
+r.melee.haste = 1.05 * 1.3 # drums
+r.ranged.haste = r.melee.haste * 1.15 # quiver only
+r.change_haste()
+r.add_rotation('asmasasaAasas')
 r.complete_fig()
 
 # %% SV, short French rotation with weaving
