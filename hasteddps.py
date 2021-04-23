@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     spec_dps = []
     for spec in ['bm', 'sv']:
-        names = ['as', 'aas', 'aaas', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama']
+        names = ['as', 'aas', 'aaas', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
         #spec = 'sv'
         plotit = 0
         labels = []
@@ -71,8 +71,8 @@ if __name__ == "__main__":
             haste = 1.05
             if (t % 600)>=5 and (t % 600)<45:
                 haste = haste * 1.3 # bloodlust
-            if (t % 180)>=5 and (t % 180)<20:
-                haste = haste * 1.4 # rapid fire
+            if (t % 180)>=5 and (t % 180)<24:
+                haste = haste * 1.5 # rapid fire
             if (t % 120)>=5 and (t % 120)<25:
                 haste = haste * 1.25 # haste pot
             
@@ -83,8 +83,8 @@ if __name__ == "__main__":
             current_dps = dps[haste_t[-1]]
             if (t % 120)>=5 and (t % 120)<25:
                 current_dps = current_dps + 0.51 * 278
-                if n==0:
-                    current_dps = current_dps * 1.1 # the beast within
+            if (t % 120)>=5 and (t % 120)<23 and n==0:
+                current_dps = current_dps * 1.1 # the beast within
             dps_t.append(current_dps)
             
         spec_dps_t.append(dps_t)

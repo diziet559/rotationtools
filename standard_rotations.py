@@ -178,6 +178,33 @@ r.change_haste()
 r.add_rotation('asaaasaa')
 r.complete_fig('BM 1:3')
 
+# %% BM, weaving 6:9:1:1 3w
+r = rotationtools.rotationplot('bm')
+r.init_fig()
+r.melee.haste = 1.05 # drums
+r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.5 # serpent + quiver + rapid fire
+r.change_haste()
+r.add_rotation('asamwasasawsasasawAa')
+r.complete_fig('BM 6:9:1:1 3w')
+
+# %% BM, weaving 6:8:1:1 3w
+r = rotationtools.rotationplot('bm')
+r.init_fig()
+r.melee.haste = 1.05 # no drums
+r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.5 # serpent + quiver + rapid fire
+r.change_haste()
+r.add_rotation('asawsasamawsasasawA')
+r.complete_fig('BM 6:8:1:1 3w')
+
+# %% BM, weaving 6:11:1:1 3w
+r = rotationtools.rotationplot('bm')
+r.init_fig()
+r.melee.haste = 1.05 # drums
+r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 * 1.5 # serpent + quiver + ihawk + rapid fire
+r.change_haste()
+r.add_rotation('asawsasamawasasaAawasa')
+r.complete_fig('BM 6:11:1:1 3w')
+
 # %% BM, max haste, 3:7 with weaving
 r = rotationtools.rotationplot('bm')
 r.init_fig()
@@ -189,7 +216,7 @@ r.ranged.haste = r.melee.haste * 1.2 * 1.15 * 1.15 * 1.3 # serpent + quiver + ha
 r.change_haste()
 for ability in r.abilities:
     r.abilities[ability].damage = r.abilities[ability].damage * 1.1
-r.add_rotation('sawasaawasaa')
+r.add_rotation('awasaawasaas')
 r.complete_fig('BM 3:7 with weaving at max haste')
 
 # %% SV, short French rotation

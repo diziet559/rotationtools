@@ -19,7 +19,7 @@ if __name__ == "__main__":
     spec = 'bm'
     weaving = 1
     if weaving:
-        names = ['asmawsaswasAaws', 'asasw', 'sawasaawasaa', 'asawsasamawasasaAawasa', 'asawsasamawsasasawA', 'as', 'asa', 'asaa']
+        names = ['asmawsaswasAaws', 'asasw', 'asamwasasawsasasawAa', 'asawsasamawasasaAawasa', 'sawasaawasaa', 'as', 'asa', 'asaa'] # 'asawsasamawsasasawA' optimal at 30% ranged-only haste
     else:
         names = ['as', 'asa', 'asaa', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
     labels = []
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     ax2.set_xticklabels(tick_func(top_tick_locs))
     ax2.set_xlabel('effective weapon swing')
     
-    #ax.set_yticks([])
+    ax.set_yticks([])
     ax.set_xticks([1, 1.15, 1.3, 1.5, 1.15*1.5, 1.3*1.5, 1.15*1.3*1.5, 1.3*1.5*1.3, 1.15*1.3*1.5*1.3, 1.15*1.3*1.5*1.5])
     ax.set_xticklabels(['reg', 'hawk', 'lust', 'RF or\nhawk, lust', 'RF, hawk', 'RF, lust', 'RF, hawk, lust', 'RF,\nlust, pot', 'RF, (hawk or DST),\nlust, pot', 'RF, hawk, lust,\npot, DST'])
     #ax.set_xlabel('total haste')
