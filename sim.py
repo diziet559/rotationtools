@@ -35,7 +35,7 @@ def mean_dps(duration):
     rhaste_t = []
     
     haste_proc = 400 # dst 400
-    haste_proc_uptime = 0
+    haste_proc_uptime = 0.18
     r = rotationtools.rotationplot(spec)
     r.character.gear.load(gearset)
     r.reloadChar()
@@ -67,8 +67,8 @@ def mean_dps(duration):
             rhastes = [ranged_haste]
             uptimes = []
             
-            if haste_proc_uptime>0:
-                factor = (haste_from_rating + haste_proc/15.8) /haste_from_rating
+            if haste_proc_uptime!=0:
+                factor = (haste_from_rating + haste_proc/15.8/100) /haste_from_rating
                 for n in range(0, len(mhastes)):
                     mhastes.append(mhastes[n] * factor) 
                     rhastes.append(rhastes[n] * factor)
@@ -79,7 +79,7 @@ def mean_dps(duration):
             
             if len(mhastes)==1:
                 uptimes = [1]
-            elif not haste_proc:
+            elif not haste_proc_uptime:
                 uptimes = [1-ihawk_time, ihawk_time]
             elif not ihawk_time:
                 uptimes = [1-haste_proc_uptime, haste_proc_uptime]
@@ -87,43 +87,46 @@ def mean_dps(duration):
                 uptimes = [0, haste_proc_uptime, ihawk_time, haste_proc_uptime*ihawk_time*1.1] # higher simultaneous uptime of both effects
                 uptimes[0] = 1 - sum(uptimes[1:]) # calculate base eWS time
                 
-            dps = 0
+            dps_table = []
+            
             if (t % 120)>=5 and (t % 120)<25:
                 r.character.gear.total_rap = r.character.gear.total_rap + 278
                 r.character.gear.total_map = r.character.gear.total_map + 278
                 r.change_stats()
-            
-            for rot in rotations:
-                r.clear()
-                r.melee.haste = haste
-                r.ranged.haste = ranged_haste
-                r.change_haste()
-                r.add_rotation(rot)
-                if (t % 120)>=5 and (t % 120)<23 and spec=='bm':
-                    dps_new = r.calc_dps(r.calc_dur(),1.5/1.1)
-                else:
-                    dps_new = r.calc_dps(r.calc_dur(),1)
-                r.ranged.haste = ihawk_haste
-                r.change_haste()
-                r.recalc()
-                if (t % 120)>=5 and (t % 120)<23 and spec=='bm':
-                    dps_hawk = r.calc_dps(r.calc_dur(),1.5/1.1)
-                else:
-                    dps_hawk = r.calc_dps(r.calc_dur(),1)
                 
-                dps_mean = ihawk_time * dps_hawk + (1-ihawk_time) * dps_new
-                if dps_new>dps:
-                    dps = dps_mean
+            for n in range(0, len(rhastes)):
+                
+                # find best rotation in loop
+                
+                dps = 0
+                
+                for rot in rotations:
+                    r.clear()
+                    r.melee.haste = mhastes[n]
+                    r.ranged.haste = rhastes[n]
+                    r.change_haste()
+                    r.add_rotation(rot)
+                    if (t % 120)>=5 and (t % 120)<23 and spec=='bm':
+                        dps_new = r.calc_dps(r.calc_dur(),1.5/1.1) * 1.1
+                    else:
+                        dps_new = r.calc_dps(r.calc_dur(),1)
+                    if dps_new>dps:
+                        dps = dps_new
+                
+                dps_table.append(dps)
+                
+                # end rotation loop
+            
             if (t % 120)>=5 and (t % 120)<25:
                 r.character.gear.total_rap = r.character.gear.total_rap - 278
                 r.character.gear.total_map = r.character.gear.total_map - 278
                 r.change_stats()
-            if (t % 120)>=5 and (t % 120)<25 and spec=='bm':
-                dps = dps * 1.1 # the beast within
-
+        
+        weighted_dps = [dps_table[n] * uptimes[n] for n in range(0,len(dps_table))]
+        
         mhaste_t.append(haste)
         rhaste_t.append(ranged_haste)
-        dps_t.append(dps)
+        dps_t.append(sum(weighted_dps))
         
     return time, dps_t, rhaste_t
 
