@@ -70,7 +70,7 @@ class Gear:
     crit_rating = 130
     hit_rating = 109
     haste_rating = 0
-    t3pc = 4
+    t3pc = 0
     d3pc = 4
     def load(self, s):
         if s=='sv':
@@ -82,12 +82,39 @@ class Gear:
             # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
-                = 598, 1814, 1756, 173, 96, 0
+                = 607, 1823, 1760, 173, 96, 0
+        elif s=='bm-wb':
+            # incl. world boss legs
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 616, 1844, 1781, 173, 84, 0
+        elif s=='bm-primal':
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 529, 1825, 1767, 174, 97, 0
         elif s=='d3t3':
             # https://seventyupgrades.com/set/7SoWG9nknKp79h4cJ5u1ng
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
-                = 546, 1668, 1605, 185, 86, 0
+                = 546, 1668, 1605, 185, 93, 0
+            self.t3pc = 4
+        elif s=='2t3kara':
+            # https://seventyupgrades.com/set/swwLZLj86DQVykvqcSP5KA
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 553, 1741, 1678, 200, 93, 0
+            self.t3pc = 2
+        elif s=='2t3':
+            # https://seventyupgrades.com/set/omxwrFns92XxxArA3VA3o1
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 541, 1853, 1790, 161, 75, 0
+            self.t3pc = 2
+        elif s=='bm-pre':
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 564, 1748, 1685, 190, 95, 0
+            
 
 class Pet:
     avgDmg = 60
@@ -268,6 +295,7 @@ class Character:
         mcrit = total_agi/40 + (self.gear.crit_rating + (0 if self.usingFlask else 20))/22.1 - 1.5 + self.talents.killerInstincts \
             + buffs[3] + debuffs[3]
         rcrit = mcrit + self.talents.mortalShots
+        hit = self.talents.surefooted + self.gear.hit_rating/15.8 + buffs[2] + debuffs[2]
         r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)
         m_ap = self.gear.total_map - self.gear.agi + total_agi + buffs[1] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)
         r_ap = r_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[0]
@@ -275,9 +303,11 @@ class Character:
         #hit = self.gear.hit_rating/15.8 + self.talents.surefooted + debuffs[2]
         haste = (1 + self.gear.haste_rating/15.8/100)
         range_haste = haste * 1.15 * (1 + self.talents.serpentsSwiftness * 0.04)
+        hit_mult = min(1, 0.91 + hit/100)
         multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.95)
+        multiplier = multiplier * hit_mult
         if ranged:
-            return (damage.Weapon(83.3, 2.9), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
+            return (damage.Weapon(75.5, 3.0), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
         else:
             return (damage.Weapon(118.6, 3.7), m_ap, mcrit, haste, multiplier)
         
@@ -288,5 +318,6 @@ class Character:
         
 if __name__ == "__main__":
     c = Character('bm')
+    c.gear.load('d3t3')
     print(c.pet.dps())
     

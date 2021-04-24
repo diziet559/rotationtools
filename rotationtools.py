@@ -50,6 +50,14 @@ class rotationplot:
         self.melee = damage.AverageMeleeDamage(avgMeleeDmg[0],avgMeleeDmg[1],avgMeleeDmg[2],avgMeleeDmg[3],avgMeleeDmg[4])
         self.abilities = abilities.create(self.ranged, self.melee)
         self.abilities['multi'].damage = self.abilities['multi'].damage * (1 + self.character.talents.barrage * 0.04)
+    
+    def reloadChar(self):
+        avgRngDmg = self.character.buffedStats(1)
+        self.ranged = damage.AverageRangedDamage(avgRngDmg[0],avgRngDmg[1],avgRngDmg[2],avgRngDmg[3],avgRngDmg[4],avgRngDmg[5])
+        avgMeleeDmg = self.character.buffedStats(0)
+        self.melee = damage.AverageMeleeDamage(avgMeleeDmg[0],avgMeleeDmg[1],avgMeleeDmg[2],avgMeleeDmg[3],avgMeleeDmg[4])
+        self.abilities = abilities.create(self.ranged, self.melee)
+        self.abilities['multi'].damage = self.abilities['multi'].damage * (1 + self.character.talents.barrage * 0.04)
 
     def init_fig(self):
         self.clear()
