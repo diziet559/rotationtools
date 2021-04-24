@@ -34,8 +34,8 @@ def mean_dps(duration):
     mhaste_t = []
     rhaste_t = []
     
-    #haste_proc = 400 # dst 400
-    #haste_proc_uptime = 10 / 60 # 1 ppm, 10 sec duration
+    haste_proc = 400 # dst 400
+    haste_proc_uptime = 0
     r = rotationtools.rotationplot(spec)
     r.character.gear.load(gearset)
     r.reloadChar()
@@ -44,14 +44,11 @@ def mean_dps(duration):
     rotations = weaving_rotations if weaving else ranged_rotations
     for t in range(0,duration,1):
         time.append(t)
-        haste = 1.05 if use_drums else 1
+        haste = 1.0506 if use_drums else 1
         rapid_duration = 19 if r.character.gear.t3pc>=2 else 15
         if (t % 120)>=5 and (t % 120)<25:
-            haste = haste + 0.25 # haste pot is additive with drums
-        #if haste_proc > 0:
-        #    haste_procced = haste + haste_proc/1600 # haste rating is additive
-        #else:
-        #    haste_procced = None
+            haste = haste + 0.2532 # haste pot is additive with drums
+        haste_from_rating = haste
         if (t % 600)>=5 and (t % 600)<45:
             haste = haste * 1.3 # bloodlust
         ranged_haste = haste * 1.15 * (1.2 if spec=='bm' else 1)
@@ -66,11 +63,36 @@ def mean_dps(duration):
             if spec=='sv':
                 ihawk_time = 0
             
+            mhastes = [haste]
+            rhastes = [ranged_haste]
+            uptimes = []
+            
+            if haste_proc_uptime>0:
+                factor = (haste_from_rating + haste_proc/15.8) /haste_from_rating
+                for n in range(0, len(mhastes)):
+                    mhastes.append(mhastes[n] * factor) 
+                    rhastes.append(rhastes[n] * factor)
+            if ihawk_time>0:
+                for n in range(0, len(mhastes)):
+                    mhastes.append(mhastes[n])
+                    rhastes.append(rhastes[n] * 1.15)
+            
+            if len(mhastes)==1:
+                uptimes = [1]
+            elif not haste_proc:
+                uptimes = [1-ihawk_time, ihawk_time]
+            elif not ihawk_time:
+                uptimes = [1-haste_proc_uptime, haste_proc_uptime]
+            else:
+                uptimes = [0, haste_proc_uptime, ihawk_time, haste_proc_uptime*ihawk_time*1.1] # higher simultaneous uptime of both effects
+                uptimes[0] = 1 - sum(uptimes[1:]) # calculate base eWS time
+                
             dps = 0
             if (t % 120)>=5 and (t % 120)<25:
                 r.character.gear.total_rap = r.character.gear.total_rap + 278
                 r.character.gear.total_map = r.character.gear.total_map + 278
                 r.change_stats()
+            
             for rot in rotations:
                 r.clear()
                 r.melee.haste = haste
@@ -88,6 +110,7 @@ def mean_dps(duration):
                     dps_hawk = r.calc_dps(r.calc_dur(),1.5/1.1)
                 else:
                     dps_hawk = r.calc_dps(r.calc_dur(),1)
+                
                 dps_mean = ihawk_time * dps_hawk + (1-ihawk_time) * dps_new
                 if dps_new>dps:
                     dps = dps_mean
@@ -102,13 +125,15 @@ def mean_dps(duration):
         rhaste_t.append(ranged_haste)
         dps_t.append(dps)
         
-    return time, dps_t
+    return time, dps_t, rhaste_t
 
 if __name__ == "__main__":
-    t, dps = mean_dps(fight_length)
+    t, dps, rhaste = mean_dps(fight_length)
     fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
     print(sum(dps)/len(dps))
     ax.plot(t, dps)
     ax.set_xlabel('time [s]')
     ax.set_ylabel('dps')
+    ax2 = ax.twinx()
+    ax2.plot(t, rhaste, 'r:')
     
