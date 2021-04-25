@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 weaving_rotations = ['asmawsaswasAaws', 'asasw', 'asamwasasawsasasawAa', 'asawsasamawasasaAawasa', 'sawasaawasaa']
 ranged_rotations = ['as', 'asa', 'asaa', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
 
-weaving = 0
+weaving = 1
 spec = 'bm'
-gearset = 'bm-primal'
+gearset = 'd3t3'
 fight_length = 180
 
 def hawk_uptime(ews):
@@ -34,14 +34,13 @@ def mean_dps(duration):
     mhaste_t = []
     rhaste_t = []
     
-    haste_proc = 400 # dst 400
-    haste_proc_uptime = 0.18
     r = rotationtools.rotationplot(spec)
     r.character.gear.load(gearset)
     r.reloadChar()
-    print(r.character.pet.buffedStats())
     print(r.character.pet.dps())
     rotations = weaving_rotations if weaving else ranged_rotations
+    haste_proc = 325 # dst 325
+    haste_proc_uptime = 0.18 if r.character.gear.dst else 0
     for t in range(0,duration,1):
         time.append(t)
         haste = 1.0506 if use_drums else 1
@@ -58,7 +57,6 @@ def mean_dps(duration):
         if (len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]):
             dps = dps_t[-1] # don't need to recalc, nothing changed
         else:
-            ihawk_haste = ranged_haste * 1.15
             ihawk_time = hawk_uptime(3.0 / ranged_haste)
             if spec=='sv':
                 ihawk_time = 0

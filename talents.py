@@ -72,22 +72,34 @@ class Gear:
     haste_rating = 0
     t3pc = 0
     d3pc = 4
+    dst = 0
     def load(self, s):
+        self.t3pc = 0
+        self.dst = 0
         if s=='sv':
             # https://seventyupgrades.com/set/vhxTGj5rtJavANR4AYjXZf
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 690, 1866, 1799, 75, 57, 0
+            self.dst = 1
         elif s=='bm':
             # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 607, 1823, 1760, 173, 96, 0
+            self.dst = 1
+        elif s=='bis2t3':
+            # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 597, 1787, 1724, 173, 106, 0
+            self.t3pc = 2
         elif s=='bm-wb':
             # incl. world boss legs
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 616, 1844, 1781, 173, 84, 0
+            self.dst = 1
         elif s=='bm-primal':
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
