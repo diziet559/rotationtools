@@ -92,10 +92,17 @@ class Gear:
                 self.hit_rating, self.haste_rating \
                 = 607, 1823, 1760, 173, 96, 0
             self.dst = 1
+            self.mweapon = damage.Weapon(114, 3.5)
+            self.rweapon = damage.Weapon(83.3, 2.9)
+        elif s=='bm-nobs':
+            # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 647, 1837, 1774, 121, 115, 0
+            self.dst = 1
             self.mweapon = damage.Weapon(118.6, 3.7)
             self.rweapon = damage.Weapon(83.3, 2.9)
         elif s=='bis2t3':
-            # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 597, 1787, 1724, 173, 106, 0
@@ -120,12 +127,14 @@ class Gear:
             self.t3pc = 4
             self.mweapon = damage.Weapon(118.6, 3.7)
             self.rweapon = damage.Weapon(75.5, 3.0)
-        elif s=='d3t3nobs':
+        elif s=='d3t3-nobs':
             # https://seventyupgrades.com/set/7SoWG9nknKp79h4cJ5u1ng
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 560, 1692, 1629, 137, 112, 0
             self.t3pc = 4
+            self.mweapon = damage.Weapon(93.3, 3.5)
+            self.rweapon = damage.Weapon(75.5, 3.0)
         elif s=='2t3kara':
             # https://seventyupgrades.com/set/swwLZLj86DQVykvqcSP5KA
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
