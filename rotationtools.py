@@ -260,11 +260,11 @@ class rotationplot:
             abilities.auto_delay(delay),
             0.4, auto.available, False
         )
-
-        plt.annotate(
-            '{delay:.2f}'.format(delay=delay), (self.current_time-0.02, 0.25),
-            ha='right', va='center'
-        )
+        if self.ax:
+            plt.annotate(
+                '{delay:.2f}'.format(delay=delay), (self.current_time-0.02, 0.25),
+                ha='right', va='center'
+            )
 
 
     def add_auto(self):
