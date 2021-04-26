@@ -7,10 +7,14 @@ import matplotlib.pyplot as plt
 weaving_rotations = ['asmawsaswasAaws', 'asasw', 'asamwasasawsasasawAa', 'asawsasamawasasaAawasa', 'sawasaawasaa']
 ranged_rotations = ['as', 'asa', 'asaa', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
 
-weaving = 1
+weaving = 0
 spec = 'bm'
-gearset = 'd3t3'
+gearset = 'bm'
+use_drums = 1
 fight_length = 180
+
+#def ew_uptime(sps, crit):
+    
 
 def hawk_uptime(ews):
     proc_chance = 0.1
@@ -28,7 +32,6 @@ def hawk_uptime(ews):
     return mean_dur / (mean_dur + mean_pause)
 
 def mean_dps(duration):
-    use_drums = 1
     dps_t = []
     time = []
     mhaste_t = []

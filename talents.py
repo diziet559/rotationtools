@@ -73,6 +73,8 @@ class Gear:
     t3pc = 0
     d3pc = 4
     dst = 0
+    rweapon = damage.Weapon(83.3, 2.9) # sunfury bow
+    mweapon = damage.Weapon(118.6, 3.7) # mooncleaver
     def load(self, s):
         self.t3pc = 0
         self.dst = 0
@@ -82,12 +84,16 @@ class Gear:
                 self.hit_rating, self.haste_rating \
                 = 690, 1866, 1799, 75, 57, 0
             self.dst = 1
+            self.mweapon = damage.Weapon(114.0, 3.5) # legacy
+            self.rweapon = damage.Weapon(83.3, 2.9)
         elif s=='bm':
             # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 607, 1823, 1760, 173, 96, 0
             self.dst = 1
+            self.mweapon = damage.Weapon(118.6, 3.7)
+            self.rweapon = damage.Weapon(83.3, 2.9)
         elif s=='bis2t3':
             # https://seventyupgrades.com/set/oCbtJQp3Wwx6LJcu6bVEzm
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
@@ -100,6 +106,8 @@ class Gear:
                 self.hit_rating, self.haste_rating \
                 = 616, 1844, 1781, 173, 84, 0
             self.dst = 1
+            self.mweapon = damage.Weapon(118.6, 3.7)
+            self.rweapon = damage.Weapon(83.3, 2.9)
         elif s=='bm-primal':
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
@@ -109,6 +117,14 @@ class Gear:
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 546, 1668, 1605, 185, 93, 0
+            self.t3pc = 4
+            self.mweapon = damage.Weapon(118.6, 3.7)
+            self.rweapon = damage.Weapon(75.5, 3.0)
+        elif s=='d3t3nobs':
+            # https://seventyupgrades.com/set/7SoWG9nknKp79h4cJ5u1ng
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 560, 1692, 1629, 137, 112, 0
             self.t3pc = 4
         elif s=='2t3kara':
             # https://seventyupgrades.com/set/swwLZLj86DQVykvqcSP5KA
@@ -126,6 +142,14 @@ class Gear:
             self.agi, self.total_rap, self.total_map, self.crit_rating, \
                 self.hit_rating, self.haste_rating \
                 = 564, 1748, 1685, 190, 95, 0
+            self.mweapon = damage.Weapon(118.6, 3.7)
+            self.rweapon = damage.Weapon(75.5, 3.0)
+        elif s=='bm-pre-nobs':
+            self.agi, self.total_rap, self.total_map, self.crit_rating, \
+                self.hit_rating, self.haste_rating \
+                = 590, 1760, 1697, 138, 114, 0
+            self.mweapon = damage.Weapon(118.6, 3.5)
+            self.rweapon = damage.Weapon(75.5, 3.0)
             
 
 class Pet:
@@ -319,9 +343,9 @@ class Character:
         multiplier = (1 + self.talents.rangedWeaponSpecialization * 0.01) * (1 + self.talents.focusedFire * 0.01) * buffs[4] * debuffs[4] * (1+0.01*self.talents.ferociousInspiration*0.95)
         multiplier = multiplier * hit_mult
         if ranged:
-            return (damage.Weapon(75.5, 3.0), damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
+            return (self.gear.rweapon, damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
         else:
-            return (damage.Weapon(118.6, 3.7), m_ap, mcrit, haste, multiplier)
+            return (self.gear.mweapon, m_ap, mcrit, haste, multiplier)
         
     def avgRangeDmg(self):
         
