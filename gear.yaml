@@ -21,41 +21,57 @@ Rotations:
         - asawasaawasa # 3:7 3-weave
 
 Gearsets:
-    BM-P1-BiS:
+    P1-BiS:
         agi: 607
         rap: 1823
         map: 1760
         cr: 173
         hr: 96
         haste: 0
+        d3pc: 4
         weapon: Sunfury
         twohander: Mooncleaver
         trinket1: Brooch
         trinket2: DST
         link: https://seventyupgrades.com/set/vhxTGj5rtJavANR4AYjXZf
-    BM-WB-BiS:
+    WB-BiS:
         agi: 616
         rap: 1844
         map: 1781
         cr: 173
         hr: 84
         haste: 0
+        d3pc: 4
         weapon: Sunfury
         twohander: Mooncleaver
         trinket1: Brooch
         trinket2: DST
-    BM-P1-BiS-noBS:
+    P1-BiS-noBS:
         agi: 607
         rap: 1823
         map: 1760
         cr: 173
         hr: 96
         haste: 0
+        d3pc: 4
         weapon: Sunfury
         twohander: QuantumBlade
         trinket1: Brooch
         trinket2: DST
         link: none
+    D3T3:
+        agi: 534
+        rap: 1680
+        map: 1617
+        cr: 189
+        hr: 93
+        haste: 0
+        d3pc: 4
+        t3pc: 4
+        weapon: Wrathtide
+        twohander: Mooncleaver
+        trinket1: Brooch
+        trinket2: Hourglass
     SV-P1-BiS:
         agi: 690
         rap: 1866
@@ -63,15 +79,16 @@ Gearsets:
         cr: 75
         hr: 57
         haste: 0
+        d3pc: 4
         weapon: Sunfury
         twohander: Legacy
         trinket1: Brooch
         trinket2: DST
         link: https://seventyupgrades.com/set/vhxTGj5rtJavANR4AYjXZf
-    BM-Preraid:
+    Preraid:
         agi: 564
-        rap: 1748
-        map: 1685
+        rap: 1798 # includes 50 from hourglass @16% uptime
+        map: 1735 # includes 50 from hourglass @16% uptime
         cr: 190
         hr: 95
         haste: 0

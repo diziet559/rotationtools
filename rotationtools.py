@@ -26,7 +26,7 @@ class rotationplot:
 
     current_time = 0
     total_damage = 0
-    remaining_armor = 6200 - 3075 - 610 - 800 - 600# base - iEA - FF - CoR - D3 proc always up
+    remaining_armor = 6200 - 3075 - 610 - 800 # base - iEA - FF - CoR
 
     hawk_until = -1
 
@@ -124,7 +124,8 @@ class rotationplot:
 
     def calc_dps(self, duration, pet = 0):
         pet_dps = self.character.pet.dps()
-        return (pet * pet_dps + self.total_damage / duration) * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
+        armor = max(0, self.remaining_armor - self.character.gear.arpen)
+        return (pet * pet_dps + self.total_damage / duration) * (1 - (armor / ((467.5 * 70) + armor - 22167.5)))
 
     def statweights(self, pet_mod=1):
         self.change_stats()

@@ -70,6 +70,7 @@ class Gear:
     crit_rating = 130
     hit_rating = 109
     haste_rating = 0
+    arpen = 0
     t3pc = 0
     d3pc = 4
     dst = 0
@@ -77,6 +78,7 @@ class Gear:
     mweapon = damage.Weapon(118.6, 3.7) # mooncleaver
     rweaponname = 'Sunfury'
     mweaponname = 'Mooncleaver'
+    
     def load(self, data, name):
         d = data['Gearsets'][name]
         self.agi = d['agi']
@@ -85,6 +87,9 @@ class Gear:
         self.crit_rating = d['cr']
         self.hit_rating = d['hr']
         self.haste_rating = d['haste']
+        self.t3pc = d.get('t3pc', 0)
+        if d.get('d3pc', 0)>=4:
+            self.arpen = self.arpen + 600
         if d.get('trinket1', '')=='DST' or d.get('trinket2', '')=='DST':
             self.dst = 1
         else:
@@ -93,6 +98,8 @@ class Gear:
                                      data['RangedWeapons'][d['weapon']]['speed'])
         self.mweapon = damage.Weapon(data['Twohanders'][d['twohander']]['dps'], \
                                      data['Twohanders'][d['twohander']]['speed'])
+        self.rweaponname = d['weapon']
+        self.mweaponname = d['twohander']
             
     def removeWeapon(self, data, wtype):
         if wtype == 'RangedWeapons':
