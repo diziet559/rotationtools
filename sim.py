@@ -2,19 +2,20 @@
 
 import rotationtools
 import matplotlib.pyplot as plt
+import yaml
 
-
-weaving_rotations = ['asmawsaswasAaws', 'asasw', 'asamwasasawsasasawAa', 'asawsasamawasasaAawasa', 'sawasaawasaa']
-ranged_rotations = ['as', 'asa', 'asaa', 'asmasAasass', 'asmasasAasas', 'asAamasasasas', 'asasasaAaasasama', 'saasa', 'saaasaa']
+with open('gear.yaml') as f:
+    data = yaml.safe_load(f)
 
 weaving = 0
-spec = 'bm'
-gearset = 'bm'
+comp = 0
 use_drums = 1
-fight_length = 180
+haste_pot = 0
 
-#def ew_uptime(sps, crit):
-    
+spec = 'bm'
+gearset = 'BM-Preraid'
+
+fight_length = 180
 
 def hawk_uptime(ews):
     proc_chance = 0.1
@@ -38,17 +39,22 @@ def mean_dps(duration):
     rhaste_t = []
     
     r = rotationtools.rotationplot(spec)
-    r.character.gear.load(gearset)
+    r.character.gear.load(data, gearset)
+    r.character.gear.addWeapon(data, 'Sunfury','RangedWeapons')
+    r.character.gear.addWeapon(data, 'Mooncleaver','Twohanders')
     r.reloadChar()
+    #r.character.gear.dst = 0
     print(r.character.pet.dps())
-    rotations = weaving_rotations if weaving else ranged_rotations
+    rotations = data['Rotations']['Weaving'] if weaving else data['Rotations']['Ranged']
+    if comp:
+        rotations = rotations + data['Rotations']['ComplexWeaving'] if weaving else data['Rotations']['ComplexRanged']
     haste_proc = 325 # dst 325
     haste_proc_uptime = 0.18 if r.character.gear.dst else 0
     for t in range(0,duration,1):
         time.append(t)
         haste = 1.0506 if use_drums else 1
         rapid_duration = 19 if r.character.gear.t3pc>=2 else 15
-        if (t % 120)>=5 and (t % 120)<25:
+        if (t % 120)>=5 and (t % 120)<25 and haste_pot:
             haste = haste + 0.2532 # haste pot is additive with drums
         haste_from_rating = haste
         if (t % 600)>=5 and (t % 600)<45:
@@ -57,7 +63,7 @@ def mean_dps(duration):
         if (t % 180)>=5 and (t % 180)<(5 + rapid_duration):
             ranged_haste = ranged_haste * 1.5 # rapid fire
             
-        if (len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]):
+        if (len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]) and (t % 20)!=5:
             dps = dps_t[-1] # don't need to recalc, nothing changed
         else:
             ihawk_time = hawk_uptime(3.0 / ranged_haste)
@@ -85,7 +91,8 @@ def mean_dps(duration):
             elif not ihawk_time:
                 uptimes = [1-haste_proc_uptime, haste_proc_uptime]
             else:
-                uptimes = [0, haste_proc_uptime, ihawk_time, haste_proc_uptime*ihawk_time*1.1] # higher simultaneous uptime of both effects
+                mutual = haste_proc_uptime*ihawk_time*1.1
+                uptimes = [0, haste_proc_uptime-mutual, ihawk_time-mutual, mutual] # higher simultaneous uptime of both effects
                 uptimes[0] = 1 - sum(uptimes[1:]) # calculate base eWS time
                 
             dps_table = []
@@ -140,4 +147,5 @@ if __name__ == "__main__":
     ax.set_ylabel('dps')
     ax2 = ax.twinx()
     ax2.plot(t, rhaste, 'r:')
+    ax2.set_ylabel('haste')
     
