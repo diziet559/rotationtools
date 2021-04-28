@@ -108,6 +108,16 @@ RangedWeapons:
         dps: 55
         speed: 3.4
         ap: 36
+    Soulstring:
+        dps: 60.7
+        speed: 2.9
+        ap: 16
+        cr: 14
+    Rhok:
+        dps: 53.3
+        speed: 2.9
+        ap: 17
+        cr: 14
     BarrelBlade:
         dps: 81.2
         speed: 2.6
