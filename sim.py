@@ -8,12 +8,12 @@ with open('gear.yaml') as f:
     data = yaml.safe_load(f)
 
 weaving = 0
-comp = 0
+comp = 1
 use_drums = 1
-haste_pot = 0
+haste_pot = 1
 
 spec = 'bm'
-gearset = 'BM-Preraid'
+gearset = 'P1-BiS'
 
 fight_length = 180
 
@@ -40,11 +40,17 @@ def mean_dps(duration):
     
     r = rotationtools.rotationplot(spec)
     r.character.gear.load(data, gearset)
-    r.character.gear.addWeapon(data, 'Sunfury','RangedWeapons')
+    r.character.gear.addWeapon(data, 'Soulstring','RangedWeapons')
     r.character.gear.addWeapon(data, 'Mooncleaver','Twohanders')
+    print('Running simulation for set {} with {} / {}.'.format(gearset, r.character.gear.rweaponname, r.character.gear.mweaponname))
+    optionstr = ('Complex' if comp else 'Simple') + ' rotations. '
+    optionstr = optionstr + ('Melee' if weaving else 'No') + ' weaving.'
+    optionstr = optionstr + (' Permanent drums.' if use_drums else ' No drums.')
+    optionstr = optionstr + (' Using haste pot with BW/TBW and trinket. ' if haste_pot else ' No haste pots.')
+    print(optionstr)
     r.reloadChar()
-    #r.character.gear.dst = 0
-    print(r.character.pet.dps())
+    #print('Pet does {petdps:.0f} dps.'.format(petdps=r.character.pet.dps()))
+    print()
     rotations = data['Rotations']['Weaving'] if weaving else data['Rotations']['Ranged']
     if comp:
         rotations = rotations + data['Rotations']['ComplexWeaving'] if weaving else data['Rotations']['ComplexRanged']
@@ -141,7 +147,7 @@ def mean_dps(duration):
 if __name__ == "__main__":
     t, dps, rhaste = mean_dps(fight_length)
     fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
-    print(sum(dps)/len(dps))
+    print('Total: {dps:.0f} dps'.format(dps=sum(dps)/len(dps)))
     ax.plot(t, dps)
     ax.set_xlabel('time [s]')
     ax.set_ylabel('dps')
