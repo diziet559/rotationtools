@@ -22,6 +22,7 @@ class Talentbuild:
         self.frenzy = getChar(s, 15)
         self.ferociousInspiration = getChar(s, 16)
         self.serpentsSwiftness = getChar(s, 19)
+        self.theBeastWithin = getChar(s, 20)
     def MM(self, s):
         self.mortalShots = getChar(s, 1)
         self.improvedHuntersMark = getChar(s, 2)
@@ -76,6 +77,7 @@ class Gear:
     dst = 0
     rweapon = damage.Weapon(83.3, 2.9) # sunfury bow
     mweapon = damage.Weapon(118.6, 3.7) # mooncleaver
+    setname = 'P1-BiS'
     rweaponname = 'Sunfury'
     mweaponname = 'Mooncleaver'
     
@@ -87,6 +89,7 @@ class Gear:
         self.crit_rating = d['cr']
         self.hit_rating = d['hr']
         self.haste_rating = d['haste']
+        self.arpen = d.get('arpen', 0)
         self.t3pc = d.get('t3pc', 0)
         if d.get('d3pc', 0)>=4:
             self.arpen = self.arpen + 600
@@ -98,6 +101,7 @@ class Gear:
                                      data['RangedWeapons'][d['weapon']]['speed'])
         self.mweapon = damage.Weapon(data['Twohanders'][d['twohander']]['dps'], \
                                      data['Twohanders'][d['twohander']]['speed'])
+        self.setname = name
         self.rweaponname = d['weapon']
         self.mweaponname = d['twohander']
             
