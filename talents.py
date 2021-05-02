@@ -75,6 +75,7 @@ class Gear:
     t3pc = 0
     d3pc = 4
     dst = 0
+    motc = 0
     rweapon = damage.Weapon(83.3, 2.9) # sunfury bow
     mweapon = damage.Weapon(118.6, 3.7) # mooncleaver
     setname = 'P1-BiS'
@@ -97,6 +98,13 @@ class Gear:
             self.dst = 1
         else:
             self.dst = 0
+        if d.get('trinket1', '')=='MotC' or d.get('trinket2', '')=='MotC':
+            self.motc = 1
+        else:
+            self.motc = 0
+        if d.get('trinket1', '')=='Hourglass' or d.get('trinket2', '')=='Hourglass':
+            self.total_map = self.total_map + 300/60*10 # 1 ppm, 10 sec
+            self.total_rap = self.total_rap + 300/60*10 # 1 ppm, 10 sec
         self.rweapon = damage.Weapon(data['RangedWeapons'][d['weapon']]['dps'], \
                                      data['RangedWeapons'][d['weapon']]['speed'])
         self.mweapon = damage.Weapon(data['Twohanders'][d['twohander']]['dps'], \
@@ -182,6 +190,7 @@ class Pet:
         owner_rap = self.owner().buffedStats(1)[2]
         buffs = self.owner().raid.buffs()
         debuffs = self.owner().raid.debuffs()
+        owner_rap = owner_rap - debuffs[0] - self.owner().gear.motc * 150
         strength = (self.strength + 20 + \
             (98 if (self.owner().raid.grp.sham or self.owner().raid.grp.enha) else 0)) \
             * (1.1 if buffs[6] else 1)
@@ -329,8 +338,8 @@ class Character:
             + buffs[3] + debuffs[3]
         rcrit = mcrit + self.talents.mortalShots
         hit = self.talents.surefooted + self.gear.hit_rating/15.8 + buffs[2] + debuffs[2]
-        r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)
-        m_ap = self.gear.total_map - self.gear.agi + total_agi + buffs[1] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)
+        r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0) + (150 if self.gear.motc else 0)
+        m_ap = self.gear.total_map - self.gear.agi + total_agi + buffs[1] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0) + (150 if self.gear.motc else 0)
         r_ap = r_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[0]
         m_ap = m_ap * (1 + 0.02 * self.talents.survivalInstincts) + debuffs[1]
         #hit = self.gear.hit_rating/15.8 + self.talents.surefooted + debuffs[2]
@@ -343,12 +352,7 @@ class Character:
             return (self.gear.rweapon, damage.Ammo(32), r_ap, rcrit, range_haste, multiplier)
         else:
             return (self.gear.mweapon, m_ap, mcrit, haste, multiplier)
-        
-    def avgRangeDmg(self):
-        
-        
-        return 2696, 39.12, 1.2 * 1.15, 1.02 * 1.04 * (1 + 0.8 * 0.03)**3
-        
+                
 if __name__ == "__main__":
     c = Character('bm')
     c.gear.load('d3t3')

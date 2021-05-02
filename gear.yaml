@@ -249,4 +249,6 @@ Trinkets:
             ap: 260
             duration: 20
             cd: 120
-        
+    MarkOfTheChampion:
+        apvsUndead: 150
+        apvsDemons: 150
