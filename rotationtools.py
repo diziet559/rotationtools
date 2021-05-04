@@ -331,23 +331,22 @@ class rotationplot:
         with open('gear.yaml') as f:
             self.data = yaml.safe_load(f)
 
-    def mean_dps(self, duration):
+    def mean_dps(self, duration, weaving = 0, comp = 0, use_drums = 0, drum_timing = 5, haste_pot = 0):
         dps_t = []
         time = []
         mhaste_t = []
         rhaste_t = []
         
-        #r.character.gear.addWeapon(data, 'Soulstring','RangedWeapons')
-        #r.character.gear.addWeapon(data, 'Mooncleaver','Twohanders')
-        comp = 0
-        weaving = 1
-        use_drums = 1
-        haste_pot = 1
         print('Running simulation for set {} with {} / {}.'.format(self.character.gear.setname, self.character.gear.rweaponname, self.character.gear.mweaponname))
         optionstr = ('Complex' if comp else 'Simple') + ' rotations. '
-        optionstr = optionstr + ('Melee' if weaving else 'No') + ' weaving.'
-        optionstr = optionstr + (' Permanent drums.' if use_drums else ' No drums.')
-        optionstr = optionstr + (' Using haste pot with BW/TBW and trinket. ' if haste_pot else ' No haste pots.')
+        optionstr = optionstr + ('Melee' if weaving else 'No') + ' weaving.' + '\n'
+        if use_drums==1:
+            optionstr = optionstr + 'Haste drums after ' + str(drum_timing) + ' seconds.\n'
+        elif use_drums==2:
+            optionstr = optionstr + 'AP drums after ' + str(drum_timing) + ' seconds.\n'
+        else:
+            optionstr = optionstr + 'No drums.\n'
+        optionstr = optionstr + ('Using haste pot with BW/TBW and trinket. ' if haste_pot else 'No haste pots.')
         print(optionstr)
         #self.reloadChar()
         #print('Pet does {petdps:.0f} dps.'.format(petdps=r.character.pet.dps()))
@@ -357,9 +356,16 @@ class rotationplot:
             rotations = rotations + self.data['Rotations']['ComplexWeaving'] if weaving else self.data['Rotations']['ComplexRanged']
         haste_proc = 325 # dst 325
         haste_proc_uptime = 0.18 if self.character.gear.dst else 0
+        self.change_stats()
         for t in range(0,duration,1):
             time.append(t)
-            haste = 1.0506 if use_drums else 1
+            haste = 1
+            if (t % 120)>=drum_timing and (t % 120)<(drum_timing+30) and use_drums==1:
+                haste = 1.0506
+            if (t % 120)>=drum_timing and (t % 120)<(drum_timing+30) and use_drums==2:
+                self.character.usingDrums = use_drums
+            else:
+                self.character.usingDrums = 0
             rapid_duration = 19 if self.character.gear.t3pc>=2 else 15
             if (t % 120)>=5 and (t % 120)<25 and haste_pot:
                 haste = haste + 0.2532 # haste pot is additive with drums
@@ -370,7 +376,7 @@ class rotationplot:
             if (t % 180)>=5 and (t % 180)<(5 + rapid_duration):
                 ranged_haste = ranged_haste * 1.5 # rapid fire
                 
-            if (len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]) and (t % 120)!=5 and (t % 120)!=5+18 and (t % 120)!=5+20:
+            if 0:#(len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]) and (t % 120)!=5 and (t % 120)!=5+18 and (t % 120)!=5+20:
                 dps = dps_t[-1] # don't need to recalc, nothing changed
             else:
                 if self.character.talents.improvedAspectHawk>0:
@@ -409,6 +415,10 @@ class rotationplot:
                     self.character.gear.total_rap = self.character.gear.total_rap + 278
                     self.character.gear.total_map = self.character.gear.total_map + 278
                     self.change_stats()
+                if (t % 120)>=drum_timing and (t % 120)<(drum_timing+30) and use_drums==2:
+                    self.character.gear.total_rap = self.character.gear.total_rap + 60
+                    self.character.gear.total_map = self.character.gear.total_map + 60
+                    self.change_stats()
                     
                 for n in range(0, len(rhastes)):
                     
@@ -436,6 +446,10 @@ class rotationplot:
                 if (t % 120)>=5 and (t % 120)<25:
                     self.character.gear.total_rap = self.character.gear.total_rap - 278
                     self.character.gear.total_map = self.character.gear.total_map - 278
+                    self.change_stats()
+                if (t % 120)>=drum_timing and (t % 120)<(drum_timing+30) and use_drums==2:
+                    self.character.gear.total_rap = self.character.gear.total_rap - 60
+                    self.character.gear.total_map = self.character.gear.total_map - 60
                     self.change_stats()
             
             weighted_dps = [dps_table[n] * uptimes[n] for n in range(0,len(dps_table))]
