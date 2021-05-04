@@ -83,13 +83,17 @@ class Gear:
     mweaponname = 'Mooncleaver'
     
     def load(self, data, name):
-        d = data['Gearsets'][name]
-        self.agi = d['agi']
-        self.total_rap = d['rap']
-        self.total_map = d['map']
-        self.crit_rating = d['cr']
-        self.hit_rating = d['hr']
-        self.haste_rating = d['haste']
+        try:
+            d = data['Gearsets'][name]
+        except:
+            print('Set not found. Aborting.')
+            return
+        self.agi = d.get('agi', 0)
+        self.total_rap = d.get('rap', 0)
+        self.total_map = d.get('map', 0)
+        self.crit_rating = d.get('cr', 0)
+        self.hit_rating = d.get('hr', 0)
+        self.haste_rating = d.get('haste', 0)
         self.arpen = d.get('arpen', 0)
         self.t3pc = d.get('t3pc', 0)
         if d.get('d3pc', 0)>=4:
@@ -105,13 +109,16 @@ class Gear:
         if d.get('trinket1', '')=='Hourglass' or d.get('trinket2', '')=='Hourglass':
             self.total_map = self.total_map + 300/60*10 # 1 ppm, 10 sec
             self.total_rap = self.total_rap + 300/60*10 # 1 ppm, 10 sec
-        self.rweapon = damage.Weapon(data['RangedWeapons'][d['weapon']]['dps'], \
-                                     data['RangedWeapons'][d['weapon']]['speed'])
-        self.mweapon = damage.Weapon(data['Twohanders'][d['twohander']]['dps'], \
-                                     data['Twohanders'][d['twohander']]['speed'])
-        self.setname = name
-        self.rweaponname = d['weapon']
-        self.mweaponname = d['twohander']
+        try:
+            self.rweapon = damage.Weapon(data['RangedWeapons'][d['weapon']]['dps'], \
+                                         data['RangedWeapons'][d['weapon']]['speed'])
+            self.mweapon = damage.Weapon(data['Twohanders'][d['twohander']]['dps'], \
+                                         data['Twohanders'][d['twohander']]['speed'])
+            self.setname = name
+            self.rweaponname = d['weapon']
+            self.mweaponname = d['twohander']
+        except:
+            print('Weapon not found.')
             
     def removeWeapon(self, data, wtype):
         if wtype == 'RangedWeapons':
@@ -195,7 +202,7 @@ class Pet:
             (98 if (self.owner().raid.grp.sham or self.owner().raid.grp.enha) else 0)) \
             * (1.1 if buffs[6] else 1)
         agi = (self.agi + buffs[5] + 20) * (1.1 if buffs[6] else 1) # scroll of agi
-        m_ap = strength * 2 + 0.22 * owner_rap + buffs[1] + debuffs[1] + (50 if self.owner().gear.t3pc>=4 else 0)
+        m_ap = strength * 2 + 0.22 * owner_rap + buffs[1] + debuffs[1] + (50 if self.owner().gear.t3pc>=4 else 0) + (60 if self.owner().usingDrums==2 else 0)
         crit = agi/25.6 + 2 * self.owner().talents.ferocity + buffs[3] + debuffs[3] - 0.6
         hit = self.owner().talents.animalHandler * 2 + buffs[2] + debuffs[2]
         atkspd = self.atkspd / (1 + self.owner().talents.serpentsSwiftness * 0.04) / (1.3 if self.cobraReflexes else 1)
@@ -314,7 +321,7 @@ class Character:
     raid = Raidsetup()
     talents = Talentbuild()
     usingFlask = 1 # elixir of major agility otherwise
-    usingDrums = 0
+    usingDrums = 0 # 1 haste drums, 2 ap drums
     
     def __init__(self, spec):
         self.talents.load(spec)
