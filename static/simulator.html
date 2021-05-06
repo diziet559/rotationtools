@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>TBC Hunter Simulator</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script type="text/javascript" src="static/sim.js"></script>
+</head>
+<body>
+<h1>TBC Hunter Simulator</h1>
+<table>
+<tr valign="top"><td width="40%">
+<form id="stats" onsubmit="return rotationplot(this)">
+<table>
+    <tr>
+        <td>Agility:</td><td><input type="text" name="agi" value="0"></td>
+    </tr><tr>
+        <td>Ranged AP:</td><td><input type="text" name="rap" value="0"></td>
+    </tr><tr>
+        <td>Melee AP:</td><td><input type="text" name="map" value="0"></td>
+    </tr><tr>
+        <td>Crit rating:</td><td><input type="text" name="cr" value="0"></td>
+    </tr><tr>
+        <td>Hit rating:</td><td><input type="text" name="hr" value="0"></td>
+    </tr><tr>
+        <td>Haste rating:</td><td><input type="text" name="haste" value="0"></td>
+    </tr><tr>
+        <td>Armor penetration:</td><td><input type="text" name="arpen" value="0"></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Weapon:</td><td><select id="weapon" name="weapon" onChange="changeBow()">
+            <option value="Slavemaker">Nerubian Slavemaker</option>
+            <option value="Wrathtide">Wrathtide Longbow</option>
+            <option value="Sunfury">Sunfury Bow of the Phoenix</option>
+            <option value="custom" selected>Custom</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td>Speed:</td><td><input type="text" name="rspd" value="2.9"></td>
+    </tr>
+    <tr>
+        <td>DPS:</td><td><input type="text" name="rdps" id="rdps" value="83.3"></td>
+    </tr>
+    <tr>
+        <td>Two-hander:</td><td><select id="twohander" name="twohander" onChange="changeTwohander()">
+            <option value="Crescent">Lunar Crescent</option>
+            <option value="Mooncleaver">Mooncleaver</option>
+            <option value="Legacy">Legacy</option>
+            <option value="custom" selected>Custom</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td>Speed:</td><td><input type="text" name="mspd" value="3.7"></td>
+    </tr>
+    <tr>
+        <td>DPS:</td><td><input type="text" name="mdps" value="118.6"></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+</table>
+<input type="text" name="rotation">
+<input type="submit"><br>
+<input type="button" onclick="return loadDoc()" value="Run sim">
+</form>
+<div><input type="button" onclick="return showImport()" value="seventyupgrades import"></div>
+<div>
+<form id="import" onsubmit="return seventyimport(this)" style="visibility: hidden; ">
+<textarea name="in" rows="8" cols="100">
+Use this area to paste data from seventyupgrades.com
+To import all data, the field ATTRIBUTES, RANGED and MELEE must be copied. Values that are not found are set to 0.
+Make sure to import stats WITHOUT TALENTS set in seventyupgrades, as talents will be accounted for here.
+</textarea>
+<input id="import-submit" type="submit" value="Import data" style="visibility: hidden; ">
+</form>
+</div>
+
+</td>
+
+<td width="50%">
+<div><img id="rotplot" width="70%"></div>
+<div id="demo"></div>
+<div id="output"></div>
+<div id="params"></div>
+</td></tr>
+</table>
+</body>
+</html>

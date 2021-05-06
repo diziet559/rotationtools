@@ -9,15 +9,15 @@ def hawk_uptime(ews):
     proc_chance = 0.1
     haste = 1.15
     duration = 12
-    
+
     attacks_during = int(duration/ews*haste)
-    
+
     drop_chance = 0.9**attacks_during
     cont_dur = sum([0.9**n * 0.1 * ews/1.15 * (n+1) for n in range(0,attacks_during)])
-    
+
     mean_dur = 12 + cont_dur / (1-drop_chance)
     mean_pause = ews / proc_chance
-    
+
     return mean_dur / (mean_dur + mean_pause)
 
 def shorthand(s):
@@ -55,7 +55,7 @@ class rotationplot:
         'Cast': 1.1,
         'GCD': 2.1,
     }
-    
+
     def __init__(self, s=None):
         if not s:
             s = 'bm'
@@ -66,7 +66,7 @@ class rotationplot:
         self.melee = damage.AverageMeleeDamage(avgMeleeDmg[0],avgMeleeDmg[1],avgMeleeDmg[2],avgMeleeDmg[3],avgMeleeDmg[4])
         self.abilities = abilities.create(self.ranged, self.melee)
         self.abilities['multi'].damage = self.abilities['multi'].damage * (1 + self.character.talents.barrage * 0.04)
-    
+
     def reloadChar(self):
         avgRngDmg = self.character.buffedStats(1)
         self.ranged = damage.AverageRangedDamage(avgRngDmg[0],avgRngDmg[1],avgRngDmg[2],avgRngDmg[3],avgRngDmg[4],avgRngDmg[5])
@@ -88,7 +88,7 @@ class rotationplot:
             ability.reset()
 
         self.ax = None
-    
+
     def setTalents(self, s):
         self.talents.load(s)
 
@@ -96,7 +96,7 @@ class rotationplot:
         s = self.rotation_string
         self.clear()
         self.add_rotation(s)
-    
+
     def change_haste(self):
         self.abilities['auto'].duration = 0.5 / self.ranged.haste
         self.abilities['auto'].cd = (self.ranged.weapon.speed - 0.5) / self.ranged.haste
@@ -147,20 +147,20 @@ class rotationplot:
         self.change_stats()
         self.recalc()
         base_dps = self.calc_dps(self.calc_dur(), pet_mod)
-        
+
         # increase ap by 1 for ap weight
         self.character.gear.total_rap = self.character.gear.total_rap + 1
         self.character.gear.total_map = self.character.gear.total_map + 1
         self.change_stats()
         self.recalc()
         ap_dps = self.calc_dps(self.calc_dur(), pet_mod)
-        
+
         # also increase agi for agi weight, total ap includes agi already
         self.character.gear.agi = self.character.gear.agi + 1
         self.change_stats()
         self.recalc()
         agi_dps = self.calc_dps(self.calc_dur(), pet_mod)
-        
+
         # undo ap and agi changes
         self.character.gear.total_rap = self.character.gear.total_rap - 1
         self.character.gear.total_map = self.character.gear.total_map - 1
@@ -170,7 +170,7 @@ class rotationplot:
         self.change_stats()
         self.recalc()
         crit_dps = self.calc_dps(self.calc_dur(), pet_mod)
-        
+
         # undo crit rating
         self.character.gear.crit_rating = self.character.gear.crit_rating - 1
         self.change_stats()
@@ -180,23 +180,23 @@ class rotationplot:
         self.change_haste()
         self.recalc()
         haste_dps = self.calc_dps(self.calc_dur(), pet_mod)
-        
+
         # calculate stat weights from dps values for each stat
         ap_weight = ap_dps - base_dps
         agi_weight = (agi_dps - base_dps)
         crit_weight = (crit_dps - base_dps)
         haste_weight = (haste_dps - base_dps)
-        
+
         # return to old values
         self.melee.haste = self.melee.haste / (1+1/15.8/100)
         self.ranged.haste = self.ranged.haste / (1+1/15.8/100)
         self.change_haste()
         self.recalc()
-    
+
         return base_dps, ap_weight, agi_weight, crit_weight, haste_weight
-        
-    
-    def complete_fig(self, title=None):
+
+
+    def complete_fig(self, title=None, legend = 1):
         #self.ax.set_xlim(-0.25, 12)
         self.ax.set_ylim(0, 3)
         self.ax.set_yticks([0.5, 1.5, 2.5])
@@ -204,29 +204,33 @@ class rotationplot:
         self.ax.set_xlabel('time [s]')
         labels = list(self.abilities.keys())
         handles = [plt.Rectangle((0,0),1,1, color=self.abilities[label].color) for label in labels]
-        plt.legend(handles, labels, bbox_to_anchor=(1.005, 1), loc='upper left')
+        if legend:
+            plt.legend(handles, labels, bbox_to_anchor=(1.005, 1), loc='upper left')
         duration = self.calc_dur()
         dps = self.calc_dps(duration)
         petdps = 1.0 * self.character.pet.dps() * (1 - (self.remaining_armor / ((467.5 * 70) + self.remaining_armor - 22167.5)))
         totaldps = dps + petdps
         rota = self.rot_stats.format(speed = self.ranged.speed(), haste = self.ranged.haste, dur=duration)
-        plt.annotate(rota,(1.005,0.5), xycoords='axes fraction')
+        if legend:
+            plt.annotate(rota,(1.005,0.5), xycoords='axes fraction')
         stats = self.dps_stats.format(rap=self.ranged.ap,map=self.melee.ap,crit=self.ranged.crit,dps=dps,petdps=petdps,totaldps=totaldps)
-        plt.annotate(stats,(1.005,0.35), xycoords='axes fraction')
+        if legend:
+            plt.annotate(stats,(1.005,0.35), xycoords='axes fraction')
         gcd_eff = self.abilities['gcd'].count * 1.5 / duration
         auto_eff = self.abilities['auto'].count * (self.abilities['auto'].duration + self.abilities['auto'].cd) / duration
         eff_str = 'gcd efficiency: ' + str(round(gcd_eff*100)) + '%\nauto efficiency: ' + str(round(auto_eff*100)) + '%'
         if self.abilities['melee'].count>0 or self.abilities['raptor'].count>0:
             weave_count = self.abilities['raptor'].count + self.abilities['melee'].count
             eff_str = eff_str + '\nweaving efficiency: ' + str(round(weave_count * (self.abilities['melee'].cd+self.abilities['melee'].duration) / duration * 100)) + '%'
-        plt.annotate(
-            eff_str,
-            (1.005, 0.23), xycoords='axes fraction'
-        )
-        plt.annotate(
-            abilities.create_breakdown(self.abilities, self.total_damage),
-            (1.005, -0.03), xycoords='axes fraction'
-        )
+        if legend:
+            plt.annotate(
+                eff_str,
+                (1.005, 0.23), xycoords='axes fraction'
+            )
+            plt.annotate(
+                abilities.create_breakdown(self.abilities, self.total_damage),
+                (1.005, -0.03), xycoords='axes fraction'
+            )
         self.ax.set_xlim(0, duration)
         if title:
             plt.title(title)
@@ -331,26 +335,27 @@ class rotationplot:
         with open('gear.yaml') as f:
             self.data = yaml.safe_load(f)
 
-    def mean_dps(self, duration, weaving = 0, comp = 0, use_drums = 0, drum_timing = 5, haste_pot = 0):
+    def mean_dps(self, duration, weaving = 0, comp = 0, use_drums = 0, drum_timing = 5, haste_pot = 0, silent = 0):
         dps_t = []
         time = []
         mhaste_t = []
         rhaste_t = []
-        
-        print('Running simulation for set {} with {} / {}.'.format(self.character.gear.setname, self.character.gear.rweaponname, self.character.gear.mweaponname))
-        optionstr = ('Complex' if comp else 'Simple') + ' rotations. '
-        optionstr = optionstr + ('Melee' if weaving else 'No') + ' weaving.' + '\n'
-        if use_drums==1:
-            optionstr = optionstr + 'Haste drums after ' + str(drum_timing) + ' seconds.\n'
-        elif use_drums==2:
-            optionstr = optionstr + 'AP drums after ' + str(drum_timing) + ' seconds.\n'
-        else:
-            optionstr = optionstr + 'No drums.\n'
-        optionstr = optionstr + ('Using haste pot with BW/TBW and trinket. ' if haste_pot else 'No haste pots.')
-        print(optionstr)
-        #self.reloadChar()
-        #print('Pet does {petdps:.0f} dps.'.format(petdps=r.character.pet.dps()))
-        print()
+
+        if not silent:
+            print('Running simulation for set {} with {} / {}.'.format(self.character.gear.setname, self.character.gear.rweaponname, self.character.gear.mweaponname))
+            optionstr = ('Complex' if comp else 'Simple') + ' rotations. '
+            optionstr = optionstr + ('Melee' if weaving else 'No') + ' weaving.' + '\n'
+            if use_drums==1:
+                optionstr = optionstr + 'Haste drums after ' + str(drum_timing) + ' seconds.\n'
+            elif use_drums==2:
+                optionstr = optionstr + 'AP drums after ' + str(drum_timing) + ' seconds.\n'
+            else:
+                optionstr = optionstr + 'No drums.\n'
+            optionstr = optionstr + ('Using haste pot with BW/TBW and trinket. ' if haste_pot else 'No haste pots.')
+            print(optionstr)
+            #self.reloadChar()
+            #print('Pet does {petdps:.0f} dps.'.format(petdps=r.character.pet.dps()))
+            print()
         rotations = self.data['Rotations']['Weaving'] if weaving else self.data['Rotations']['Ranged']
         if comp:
             rotations = rotations + self.data['Rotations']['ComplexWeaving'] if weaving else self.data['Rotations']['ComplexRanged']
@@ -375,7 +380,7 @@ class rotationplot:
             ranged_haste = haste * 1.15 * (1 + 0.04 * self.character.talents.serpentsSwiftness)
             if (t % 180)>=5 and (t % 180)<(5 + rapid_duration):
                 ranged_haste = ranged_haste * 1.5 # rapid fire
-                
+
             if 0:#(len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]) and (t % 120)!=5 and (t % 120)!=5+18 and (t % 120)!=5+20:
                 dps = dps_t[-1] # don't need to recalc, nothing changed
             else:
@@ -383,21 +388,21 @@ class rotationplot:
                     ihawk_time = hawk_uptime(3.0 / ranged_haste)
                 else:
                     ihawk_time = 0
-                
+
                 mhastes = [haste]
                 rhastes = [ranged_haste]
                 uptimes = []
-                
+
                 if haste_proc_uptime!=0:
                     factor = (haste_from_rating + haste_proc/15.8/100) /haste_from_rating
                     for n in range(0, len(mhastes)):
-                        mhastes.append(mhastes[n] * factor) 
+                        mhastes.append(mhastes[n] * factor)
                         rhastes.append(rhastes[n] * factor)
                 if ihawk_time>0:
                     for n in range(0, len(mhastes)):
                         mhastes.append(mhastes[n])
                         rhastes.append(rhastes[n] * 1.15)
-                
+
                 if len(mhastes)==1:
                     uptimes = [1]
                 elif not haste_proc_uptime:
@@ -408,9 +413,9 @@ class rotationplot:
                     mutual = haste_proc_uptime*ihawk_time*1.1
                     uptimes = [0, haste_proc_uptime-mutual, ihawk_time-mutual, mutual] # higher simultaneous uptime of both effects
                     uptimes[0] = 1 - sum(uptimes[1:]) # calculate base eWS time
-                    
+
                 dps_table = []
-                
+
                 if (t % 120)>=5 and (t % 120)<25:
                     self.character.gear.total_rap = self.character.gear.total_rap + 278
                     self.character.gear.total_map = self.character.gear.total_map + 278
@@ -419,13 +424,13 @@ class rotationplot:
                     self.character.gear.total_rap = self.character.gear.total_rap + 60
                     self.character.gear.total_map = self.character.gear.total_map + 60
                     self.change_stats()
-                    
+
                 for n in range(0, len(rhastes)):
-                    
+
                     # find best rotation in loop
-                    
+
                     dps = 0
-                    
+
                     for rot in rotations:
                         self.clear()
                         self.melee.haste = mhastes[n]
@@ -438,11 +443,11 @@ class rotationplot:
                             dps_new = self.calc_dps(self.calc_dur(),1)
                         if dps_new>dps:
                             dps = dps_new
-                    
+
                     dps_table.append(dps)
-                    
+
                     # end rotation loop
-                
+
                 if (t % 120)>=5 and (t % 120)<25:
                     self.character.gear.total_rap = self.character.gear.total_rap - 278
                     self.character.gear.total_map = self.character.gear.total_map - 278
@@ -451,14 +456,14 @@ class rotationplot:
                     self.character.gear.total_rap = self.character.gear.total_rap - 60
                     self.character.gear.total_map = self.character.gear.total_map - 60
                     self.change_stats()
-            
+
             weighted_dps = [dps_table[n] * uptimes[n] for n in range(0,len(dps_table))]
-            
+
             mhaste_t.append(haste)
             rhaste_t.append(ranged_haste)
             dps_t.append(sum(weighted_dps))
-            
-        return time, dps_t, rhaste_t
+
+        return time, dps_t, rhaste_t, mhaste_t
 
 
 if __name__ == "__main__":

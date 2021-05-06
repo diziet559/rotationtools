@@ -10,10 +10,11 @@ fight_length = 180
 r = rotationtools.rotationplot()
 r.loadData('gear.yaml')
 r.loadSet(gearset)
-#r.character.gear.addWeapon(r.data, 'Wolfslayer', 'RangedWeapons')
+r.character.gear.addWeapon(r.data, 'Sunfury', 'RangedWeapons')
+print(r.melee.weapon.dps)
 #r.character.gear.addWeapon(r.data, 'QuantumBlade', 'Twohanders')
 
-t, dps, rhaste = r.mean_dps(fight_length, weaving=1, use_drums = 1)
+t, dps, rhaste, mhaste = r.mean_dps(fight_length, weaving=1, use_drums = 1)
 fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
 print('Total: {dps:.0f} dps'.format(dps=sum(dps)/len(dps)))
 ax.plot(t, dps)
