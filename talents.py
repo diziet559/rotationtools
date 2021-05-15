@@ -251,8 +251,18 @@ class Pet:
     def specialCD(self):
         if self.family in ['cat', 'raptor', 'owl', 'windserpent', 'bat', 'ravager']:
             return 1.5
-        elif self.family in ['wolf', 'spider']:
+        else:
             return 10
+    def setPet(self, s):
+        if s=='ws':
+            t = 'windserpent'
+        elif s=='ra':
+            t = 'ravager'
+        elif s=='sb':
+            t = 'sporebat'
+        else:
+            t = s
+        self.family = t
         
     def buffedStats(self):
         owner_rap = self.owner().buffedStats(1)[2]
@@ -465,6 +475,9 @@ class Character:
                 
 if __name__ == "__main__":
     c = Character('bm')
+    c.talents.bestialDiscipline = 2
+    c.talents.goForTheThroat = 2
+    c.pet.setPet('ra')
     with open('gear.yaml') as f:
         data = yaml.safe_load(f)
     c.gear.load(data, 'D3T3')
