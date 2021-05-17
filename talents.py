@@ -405,7 +405,7 @@ class Raidsetup:
         if self.grp.feral>0:
             crit = crit + 5
         if (self.grp.enha):
-            agi = agi + 88*1.15 # improved grace of air totem
+            agi = agi + 88*1.15*0.9 # improved grace of air totem
         elif (self.grp.sham>0):
             agi = agi + 88 # grace of air totem
         if self.grp.warr>0:

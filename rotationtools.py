@@ -4,6 +4,7 @@ import damage
 import abilities
 import talents
 import yaml
+from math import ceil
 
 def hawk_uptime(ews):
     proc_chance = 0.1
@@ -277,8 +278,9 @@ class rotationplot:
                 ability.annotation, (self.current_time + ability.duration / 2, y1 + 0.4),
                 ha='center', va='center'
             )
-
+        
         self.total_damage = self.total_damage + ability.damage
+        
 
         if (update_time):
             self.current_time = self.current_time + ability.duration
@@ -319,6 +321,19 @@ class rotationplot:
 
     def add_rotation(self, s):
         self.rotation_string = s
+
+        melee_dmg = self.abilities['melee'].damage
+        raptor_dmg = self.abilities['raptor'].damage
+
+        if self.character.raid.grp.enha==1:
+            self.abilities['melee'].damage =self.abilities['melee'].damage + 0.2 * melee_dmg
+            self.abilities['raptor'].damage =self.abilities['raptor'].damage + 0.2 * melee_dmg
+        
+        if s.count('r')==0 and s.count('w')>0:
+            raptor_every = ceil(self.abilities['raptor'].cd/self.abilities['melee'].cd)
+            mean_dmg = (self.abilities['melee'].damage * (raptor_every - 1) + self.abilities['raptor'].damage) / raptor_every
+            self.abilities['melee'].damage = mean_dmg
+        
         for c in s:
             if self.current_time>self.hawk_until and self.hawk_until>0:
                 self.ranged.haste = self.ranged.haste / 1.15 # un-proc imp hawk
@@ -342,6 +357,9 @@ class rotationplot:
                     self.ranged.haste = self.ranged.haste * 1.15 # manually proc imp hawk for testing
                     self.change_haste()
                 self.hawk_until = self.current_time + 12
+        
+        self.abilities['melee'].damage = melee_dmg
+        self.abilities['raptor'].damage = raptor_dmg
 
     def loadSet(self, name):
         self.character.gear.load(self.data, name)
