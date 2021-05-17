@@ -159,7 +159,7 @@ This combines cycles of 1:2 and 1:3 at very high haste - for phase 1, this requi
 - [1:1 half-weave (2:2 1w)](#11-half-weave-22-1w)
 - [6:9:1:1 3w](#6911-3w)
 - [6:11:1:1 3w](#61111-3w)
-- [3:7 3w](#37-3w)
+- [3:7 2w](#37-2w)
 
 Although it appears like we have less time at high levels of haste, weaving actually becomes easier in TBC mostly due to the removal of the deadzone. When positioned at minimal shooting range all it takes is the tiniest of steps to get into melee range - weaves can be done as quickly as 0.2 seconds for stepping in, using Raptor strike or a melee white hit, and stepping out again. Depending on habit, backpedaling can be a viable mode of movement here because the distance to travel is just so low. Even slow weavers will manage to stay below 0.4 seconds weaving time, so at even at extremely stacked haste it does not interfere with auto shots. An example video of weaving in the TBC Beta by Sixx can be found [in the resources section](#resources).
 
@@ -203,7 +203,7 @@ Use with Rapid Fire, Rapid Fire and Drums of Battle or Rapid Fire and improved A
 
 Use with Rapid Fire, improved Aspect of the Hawk and Drums of Battle, or Rapid Fire and Bloodlust (Drums optional).
 
-#### 3:7 3w
+#### 3:7 2w
 
 ![bm_weaving_37](img/bm_weaving_37.png)
 
