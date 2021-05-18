@@ -329,6 +329,7 @@ class Group:
     ret = 0
     sham = 0 # other than enhance
     warr = 0
+    draenei = 0 # draenei hunter, paladin, or warrior
     def load(self, s):
         self.feral = s.count('f')
         self.bm = s.count('b')
@@ -336,6 +337,7 @@ class Group:
         self.sham = s.count('s')
         self.warr = s.count('w')
         self.ret = s.count('r')
+        self.draenei = s.count('d')
 
 class Raidsetup:
     grp = Group()
@@ -360,6 +362,7 @@ class Raidsetup:
         self.grp.sham = 0
         self.grp.ret = 0
         self.grp.bm = 0
+        self.grp.draenei = 0
         self.paladin = 0
         self.druid = 0
         self.warlock = 0
@@ -422,6 +425,8 @@ class Raidsetup:
             r_ap = r_ap + 155 # aspect of the hawk
         if pet:
             m_ap = m_ap + 0.22 * hunter_rap
+        if self.grp.draenei>0:
+            hit =  hit + 1 # heroic presence
         return (r_ap, m_ap, hit, crit, multiplier, agi, kings)
 
 class Character:
