@@ -77,6 +77,8 @@ class Gear:
     arpen = 0
     t3pc = 0
     d3pc = 4
+    t5pc = 0
+    t6pc = 0
     dst = 0
     motc = 0
     use1ap = 0
@@ -237,12 +239,13 @@ class Pet:
     def specialDmg(self):
         if self.family=='ravager':
             avgDmg = 49 * (1 + 0.5 * 1) # gore has 50% chance for double dmg
+            #avgDmg = (avgDmg * 6 + 120) / 7
         elif self.family in ['cat', 'raptor']:
             avgDmg = 65 # claw
         elif self.family in ['owl', 'bat']:
             avgDmg = 47 # screech
         elif self.family=='windserpent':
-            avgDmg = 108+14 # lightning breath
+            avgDmg = 108 # lightning breath
         elif self.family in ['spider', 'wolf']:
             avgDmg = 120 # bite
         elif self.family=='sporebat':
@@ -315,7 +318,7 @@ class Pet:
         min_period = 25 / focus_avail
         if self.family=='windserpent':
             min_period = min_period * 2 # LB uses 50 focus
-            skill_dps = self.specialDmg() * (0.84 + 0.13 * 0.5) * dmg_mult / max(self.specialCD(), min_period) # low hit, low crit, low crit bonus
+            skill_dps = (self.specialDmg() + stats[0] *0.05*0.125) * (0.84 + 0.13 * 0.5) * dmg_mult / max(self.specialCD(), min_period) # low hit, low crit, low crit bonus
         else:
             skill_dps = self.specialDmg() * (hit + crit) * dmg_mult / max(self.specialCD(), min_period)
         
@@ -481,10 +484,11 @@ class Character:
 if __name__ == "__main__":
     c = Character('bm')
     c.talents.bestialDiscipline = 2
-    c.talents.goForTheThroat = 2
-    c.pet.setPet('ra')
+    c.talents.goForTheThroat = 4
+    c.pet.setPet('ws')
     with open('gear.yaml') as f:
         data = yaml.safe_load(f)
-    c.gear.load(data, 'D3T3')
+    c.gear.load(data, 'P1-BiS')
+    c.gear.total_rap = 1000000000
     c.raid.ewAP = 0
     print(c.pet.dps())
