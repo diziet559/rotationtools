@@ -10,7 +10,7 @@ class Weapon:
 
 
 class AverageRangedDamage:
-    def __init__(self, weapon, ammo, ap, crit, haste, multiplier):
+    def __init__(self, weapon, ammo, ap, crit, haste, multiplier, t5pc = 0, t6pc = 0):
         self.weapon = weapon
         self.ammo = ammo
         self.ap = ap
@@ -18,12 +18,21 @@ class AverageRangedDamage:
         self.multiplier = multiplier
         self.haste = haste
         self.crit_dmg_multiplier = 1.3
+        self.t5 = t5pc
+        self.t6 = t6pc
 
     def auto(self):
         return self.attack(0, self.weapon.speed / 14)
 
     def steady(self):
-        return self.attack(150, 0.2, False, 2.8)
+        if self.t5>=4:
+            self.crit += 5 # 5% increased crit chance set bonus
+        dmg = self.attack(150, 0.2, False, 2.8)
+        if self.t6>=4:
+            dmg *= 1.1 # 10% increased damage bonus
+        if self.t5>=4:
+            self.crit -= 5 # undo crit chance change
+        return dmg
 
     def multi(self):
         return self.attack(205, 0.2)
