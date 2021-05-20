@@ -37,6 +37,18 @@ In both cases, `WS` is the original weapon swing time as given in the weapons to
 
 In most of TBC, hunters will be using weapons with 3.0 tooltip speed. The only exception is P1, where the best weapon (Sunfury Bow of the Phoenix off of Prince Malchezaar) has a 2.9 speed. The best preraid weapon, Wrathtide Longbow, also has a 3.0 speed as most later weapons.
 
+### Introduction to hunter rotations
+
+All the following rotations are based around keeping your GCD used while delaying your Auto Shots (and melees if weaving) as little as possible.  You do not need to memorize each of them if you understand a small bit about some repeating patterns. Multi-Shot and Arcane Shot are useful for getting value from your GCD when casting a steady would delay your auto.  In many of the slower rotations you will see a pattern like `auto - steady - SPELL - auto - steady`.  This occurs when your weapon swing is well slower than 1.5 and you need to fit in 3 GCDs over 2 weapon swings but steadying in place of `SPELL` would delay your auto.  This pattern is the basis of the French rotation (5:5:1:1) and many of its variants. At slightly faster haste you will see a similar pattern: `auto - steady - arcane - auto - multi`.  This accomplishes the same thing (3 GCDs over 2 weapon swings) but when your weapon swing is much closer as you can fit the **casts** of steady + arcane into a 1.5 second gap between the first two autos.
+
+When your ranged weapon swing goes lower than 1.5, you start to use Multi-Shot (and less often, Arcane Shot) to reset your GCD without losing damage.  You'll see this with any polyrhythmic rotation like 5:3 or 3:2.  You are 1:1ing but overtime your GCD and auto drift and you'll eventually need to Auto twice in a row before you cast.  You can Multi-Shot just before this catchup auto to irk out more DPS without further delaying your swing timer. In all of these situations (which describe something like 90% of the ranged rotations) you're using Multi-Shot and Arcane Shot in situations where you have your GCD up but a fully steady cast would delay and incoming auto.  If you have a basic understanding of the haste ranges for these rotations, you only need to watch your swing timer and GCD to figure when to weave a Multi-Shot in according to the above patterns.  **You don't need to memorize the French rotation if you can vibe your way to following some steadys with Mutli-Shots.**
+
+TLDR:
+
+- Only cast steady immediately following an auto.
+- Cast multi/arcane tastefully where you cannot fit a steady. - Weave when GCD is up and auto swing isn't ready.
+- For bonus points, do this sometimes `auto - steady - SPELL - auto - steady`
+
 ### Changing rotations
 
 During a fight, TBC hunters use different rotations depending on their current haste value or effective weapon swing. Stacking all available haste effects, hunter can achieve 3.36 additional haste for a total of 4.64 with BM talents. This pushes the eWS down to 0.62 seconds. This relies on having improved Aspect of the Hawk and the proc of Dragon Spine Trophy up during your own stacked haste effects from Bloodlust, Rapid Fire, Drums of Battle and Haste Potion. This can only happen for a maximum of 10 seconds (shortest duration of these effects) every 10 minutes (longest cd of these effects), but we will be doing huge dps during this time.
