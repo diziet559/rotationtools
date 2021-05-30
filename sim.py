@@ -3,24 +3,24 @@
 import rotationtools
 import matplotlib.pyplot as plt
 
-gearset = 'SV-P1-BiS'
+gearset = 'P1-BiS'
 
 fight_length = 180
 
-r = rotationtools.rotationplot('sv')
+r = rotationtools.rotationplot('bm')
 r.loadData('gear.yaml')
 r.loadSet(gearset)
-r.character.usingFlask = 0
+r.character.usingFlask = 1
 r.character.gear.addWeapon(r.data, 'Sunfury', 'RangedWeapons')
 print(r.melee.weapon.dps)
-r.character.gear.addWeapon(r.data, 'Legacy', 'Twohanders')
+#r.character.gear.addWeapon(r.data, 'Legacy', 'Twohanders')
 r.character.gear.changeTrinket1('Brooch')
-r.character.gear.changeTrinket2('Abacus')
+r.character.gear.changeTrinket2('Slayers')
 
 #r.character.gear.dst = 1
 #r.character.talents.improvedAspectHawk = 5
 
-t, dps, rhaste, mhaste, rotations, sps = r.mean_dps(fight_length, weaving=1, comp=0, use_drums = 1, haste_pot=1)
+t, dps, rhaste, mhaste, rotations, sps = r.mean_dps(fight_length, weaving=1, comp=1, use_drums = 1, haste_pot=1)
 
 uniq = {x for l in rotations for x in l}
 
@@ -42,6 +42,23 @@ for r2 in uniq:
     hastes.append((rh, mh))
     print(r2, xpos, ypos, r3)
     print(rh, mh)
+    
+rot_times = []
+for r3 in uniq:
+    rt = []
+    start = -2
+    stop = -2
+    for i, rots in enumerate(rotations):
+        if (start<0) and (r3 in rots):
+            start = i
+            print('started')
+        if (start>=0) and not (r3 in rots):
+            rt.append([start, i-1])
+            start = -2
+            print('ended')
+        if (i==len(rotations)-1) and (r3 in rots):
+            rt.append([start, i])
+    rot_times.append(rt)
 
 result = {}
 result['rotations'] = list(uniq)
@@ -57,8 +74,11 @@ ax.plot(t, dps)
 ax.set_xlabel('time [s]')
 ax.set_ylabel('dps')
 ax.set_xlim([0, fight_length])
+print(rot_times)
 #ax.set_ylim([0, ax.get_ylim()[1]])
-ax.set_ylim([2000, 4000])
+#ax.set_ylim([2000, 4000])
 #ax2 = ax.twinx()
 #ax2.plot(t, rhaste, 'r:')
 #ax2.set_ylabel('haste')
+
+print(r.mean_weights(180, weaving=1, comp=0, haste_pot=1, use_drums=1))

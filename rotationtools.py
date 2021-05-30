@@ -399,16 +399,52 @@ class rotationplot:
         haste_proc = 325 # dst 325
         haste_proc_uptime = 0.27 if self.character.gear.dst else 0
         self.change_stats()
+        rapid_duration = 19 if self.character.gear.t3pc>=2 else 15
+        recalc_on = []
+        for t in range(0,duration,1):
+            addthis = 0
+            if t==0:
+                addthis = 1
+            elif (t % 120) in [5, 20, 23, 25, drum_timing, drum_timing+30, 5+self.character.gear.use1dur, 5+self.character.gear.use1dur+self.character.gear.use2dur]:
+                addthis = 1
+            elif (t % 180) in [5, 5+rapid_duration]:
+                addthis = 1
+            elif (t % 600) in [5, 45]:
+                addthis = 1
+            elif self.character.talents.masterTactician>0 and t<8:
+                # to get MT procs up
+                addthis = 1
+            if addthis:
+                recalc_on.append(t)
+        
         for t in range(0,duration,1):
             time.append(t)
-            haste = 1
+    
+            if not t in recalc_on:
+                mhaste_t.append(mhaste_t[-1])
+                rhaste_t.append(rhaste_t[-1])
+                dps_t.append(dps_t[-1])
+                sps_t.append(sps_t[-1])
+                rotations_t.append(rotations_t[-1])
+                continue
+            
+            mt_crit = 0
+            if self.character.talents.masterTactician and t>0:
+                if t<8:
+                    mtShots = sum(sps_t)
+                else:
+                    mtShots = sum(sps_t[-8:])
+                mt_crit = 2 * self.character.talents.masterTactician * (1 - (1 - 0.06)**(int(mtShots)))
+
+            self.character.gear.crit_rating += mt_crit*22.1
+            
+            haste = 1 + self.character.gear.haste_rating / 1577
             if (t % 120)>=drum_timing and (t % 120)<(drum_timing+30) and use_drums==1:
-                haste = 1.0506
+                haste = haste + 0.0506
             if (t % 120)>=drum_timing and (t % 120)<(drum_timing+30) and use_drums==2:
                 self.character.usingDrums = use_drums
             else:
                 self.character.usingDrums = 0
-            rapid_duration = 19 if self.character.gear.t3pc>=2 else 15
             if (t % 120)>=5 and (t % 120)<20 and haste_pot:
                 haste = haste + 0.2532 # haste pot is additive with drums
             haste_from_rating = haste
@@ -525,7 +561,9 @@ class rotationplot:
                     self.character.gear.total_rap = self.character.gear.total_rap - 60
                     self.character.gear.total_map = self.character.gear.total_map - 60
                     self.change_stats()
-
+            
+            self.character.gear.crit_rating -= mt_crit*22.1
+            
             weighted_dps = [dps_table[n] * uptimes[n] for n in range(0,len(dps_table))]
             weighted_sps = [sps_table[n] * uptimes[n] for n in range(0,len(sps_table))]
 
@@ -537,6 +575,47 @@ class rotationplot:
 
         sps = sum(sps_t)/len(sps_t)
         return time, dps_t, rhaste_t, mhaste_t, rotations_t, sps
+    
+    def mean_weights(self, duration, weaving = 0, comp = 0, use_drums = 0, drum_timing = 5, haste_pot = 0):
+        
+        time, dps_t, rhaste_t, mhaste_t, rotations_t, sps = self.mean_dps(duration, weaving, comp, use_drums, drum_timing, haste_pot, silent = 1)
+        base_dps = sum(dps_t)/len(dps_t)
+        
+        self.character.gear.total_rap += 1
+        self.character.gear.total_map += 1
+        
+        time, dps_t, rhaste_t, mhaste_t, rotations_t, sps = self.mean_dps(duration, weaving, comp, use_drums, drum_timing, haste_pot, silent = 1)
+        ap_dps = sum(dps_t)/len(dps_t)
+        
+        self.character.gear.agi += 1
+        
+        time, dps_t, rhaste_t, mhaste_t, rotations_t, sps = self.mean_dps(duration, weaving, comp, use_drums, drum_timing, haste_pot, silent = 1)
+        agi_dps = sum(dps_t)/len(dps_t)
+        
+        self.character.gear.total_rap -= 1
+        self.character.gear.total_map -= 1
+        self.character.gear.agi -= 1
+        
+        self.character.gear.crit_rating += 1
+        
+        time, dps_t, rhaste_t, mhaste_t, rotations_t, sps = self.mean_dps(duration, weaving, comp, use_drums, drum_timing, haste_pot, silent = 1)
+        cr_dps = sum(dps_t)/len(dps_t)
+        
+        self.character.gear.crit_rating -= 1
+        self.character.gear.haste_rating += 1
+        
+        time, dps_t, rhaste_t, mhaste_t, rotations_t, sps = self.mean_dps(duration, weaving, comp, use_drums, drum_timing, haste_pot, silent = 1)
+        haste_dps = sum(dps_t)/len(dps_t)
+
+        self.character.gear.haste_rating -= 1
+        
+        ap_weight = ap_dps - base_dps
+        agi_weight = agi_dps - base_dps
+        cr_weight = cr_dps - base_dps
+        haste_weight = haste_dps - base_dps
+        
+        return ap_weight, agi_weight, cr_weight, haste_weight
+        
 
 
 if __name__ == "__main__":

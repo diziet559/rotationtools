@@ -46,6 +46,8 @@ class Talentbuild:
         self.killerInstincts = getChar(s, 14)
         self.lightningReflexes = getChar(s, 17)
         self.exposeWeakness = getChar(s, 20)
+        self.masterTactician = getChar(s, 21)
+        self.readiness = getChar(s, 22)
         
     def load(self, s):
         if (s=='7/20/34') or (s=='sv'):
@@ -246,6 +248,8 @@ class Pet:
             avgDmg = 47 # screech
         elif self.family=='windserpent':
             avgDmg = 108 # lightning breath
+        elif self.family in ['wolf']:
+            avgDmg = 51 * 1
         elif self.family in ['spider', 'wolf']:
             avgDmg = 120 # bite
         elif self.family=='sporebat':
@@ -303,7 +307,8 @@ class Pet:
         
         if self.owner().talents.ferociousInspiration>0:
             first_fi = 1/(1/average_frenzied_atkspd + 1/1.5) / crit
-            fi_drop = (1 - crit)**int(8/average_frenzied_atkspd + 5 + 1) # 1/atkspd autohits + 5 gore/claw/lightning + 1 kill command
+            fi_drop = (1 - crit)**int(10/average_frenzied_atkspd + 5 + 1) # 1/atkspd autohits + 5 gore/claw/lightning + 1 kill command
+            average_extension = 10/int(10/average_frenzied_atkspd + 5 + 1) / crit
             average_length = average_extension / fi_drop + 10
             fi_uptime = average_length / (average_length + first_fi)
         else:
@@ -484,11 +489,10 @@ class Character:
 if __name__ == "__main__":
     c = Character('bm')
     c.talents.bestialDiscipline = 2
-    c.talents.goForTheThroat = 4
-    c.pet.setPet('ws')
+    c.talents.goForTheThroat = 0
+    c.pet.setPet('ra')
     with open('gear.yaml') as f:
         data = yaml.safe_load(f)
     c.gear.load(data, 'P1-BiS')
-    c.gear.total_rap = 1000000000
-    c.raid.ewAP = 0
+    c.talents.frenzy = 5
     print(c.pet.dps())
