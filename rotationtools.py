@@ -6,9 +6,9 @@ import talents
 import yaml
 from math import ceil
 
-def hawk_uptime(ews):
+def hawk_uptime(ews, pts = 5):
     proc_chance = 0.1
-    haste = 1.15
+    haste = 1 + 0.03 * pts
     duration = 12
 
     attacks_during = int(duration/ews*haste)
@@ -458,7 +458,7 @@ class rotationplot:
                 dps = dps_t[-1] # don't need to recalc, nothing changed
             else:
                 if self.character.talents.improvedAspectHawk>0:
-                    ihawk_time = hawk_uptime(3.0 / ranged_haste)
+                    ihawk_time = hawk_uptime(self.ranged.weapon.speed / ranged_haste, self.character.talents.improvedAspectHawk)
                 else:
                     ihawk_time = 0
 
@@ -499,7 +499,7 @@ class rotationplot:
                 if ihawk_time>0:
                     for n in range(0, len(mhastes)):
                         mhastes.append(mhastes[n])
-                        rhastes.append(rhastes[n] * 1.15)
+                        rhastes.append(rhastes[n] * (1 + 0.03 * self.character.talents.improvedAspectHawk))
 
                 if len(mhastes)==1:
                     uptimes = [1]
