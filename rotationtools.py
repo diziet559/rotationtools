@@ -27,11 +27,13 @@ def ew_uptime(ews, crit):
 
     attacks_during = int(duration/ews)
 
-    drop_chance = (1-crit)**attacks_during
-    cont_dur = sum([(1-crit)**n * crit * ews * (n+1) for n in range(0,attacks_during)])
+    drop_chance = (1-proc_chance)**attacks_during
+    cont_dur = sum([(1-proc_chance)**n * proc_chance * ews * (n+1) for n in range(0,attacks_during)])
 
-    mean_dur = duration + cont_dur / (1-drop_chance)
+    mean_dur = duration + cont_dur / drop_chance
     mean_pause = ews / proc_chance - ews/2
+    print(mean_dur)
+    print(mean_pause)
 
     return mean_dur / (mean_dur + mean_pause)
 
@@ -452,6 +454,8 @@ class rotationplot:
                 haste = haste * 1.3 # bloodlust
             ranged_haste = haste * 1.15 * (1 + 0.04 * self.character.talents.serpentsSwiftness)
             if (t % 180)>=5 and (t % 180)<(5 + rapid_duration):
+                ranged_haste = ranged_haste * 1.4 # rapid fire
+            if self.character.talents.readiness>0 and (t % 360)>=(5+rapid_duration) and (t % 360)<(5 + 2 * rapid_duration):
                 ranged_haste = ranged_haste * 1.4 # rapid fire
 
             if 0:#(len(mhaste_t)>0) and (haste==mhaste_t[-1]) and (ranged_haste==rhaste_t[-1]) and (t % 120)!=5 and (t % 120)!=5+18 and (t % 120)!=5+20:
