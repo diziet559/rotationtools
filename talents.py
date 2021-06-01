@@ -281,7 +281,7 @@ class Pet:
             * (1.1 if buffs[6] else 1)
         agi = (self.agi + buffs[5] + 20) * (1.1 if buffs[6] else 1) # scroll of agi
         m_ap = strength * 2 + 0.22 * owner_rap + buffs[1] + debuffs[1] + (50 if self.owner().gear.t3pc>=4 else 0) + self.owner().raid.ewAP + (60 if self.owner().usingDrums==2 else 0)
-        crit = agi/25.6 + 2 * self.owner().talents.ferocity + buffs[3] + debuffs[3] - 0.6
+        crit = agi/25.6 + 2 * self.owner().talents.ferocity + buffs[3] + debuffs[3] - 4.8
         hit = self.owner().talents.animalHandler * 2 + buffs[2] + debuffs[2]
         atkspd = self.atkspd / (1 + self.owner().talents.serpentsSwiftness * 0.04) / (1.3 if self.cobraReflexes else 1)
         multiplier = (0.86 if self.cobraReflexes else 1) * buffs[4] * debuffs[4]
@@ -462,7 +462,7 @@ class Character:
         # buffs + scroll + food (20 agi each) + elixir if not flasking
         total_agi = self.buffedAgi()
         mcrit = total_agi/40 + (self.gear.crit_rating + (0 if self.usingFlask else 20))/22.1 - 1.5 + self.talents.killerInstincts \
-            + buffs[3] + debuffs[3]
+            + buffs[3] + debuffs[3] - 4.8
         rcrit = mcrit + self.talents.mortalShots
         hit = self.talents.surefooted + self.gear.hit_rating/15.8 + buffs[2] + debuffs[2]
         r_ap = self.gear.total_rap - self.gear.agi + total_agi + buffs[0] + (120 if self.usingFlask else 0) + (50 if self.gear.t3pc>=4 else 0)

@@ -394,10 +394,8 @@ class rotationplot:
             #print('Pet does {petdps:.0f} dps.'.format(petdps=r.character.pet.dps()))
             print()
         rotations = self.data['Rotations']['Weaving'] if weaving else self.data['Rotations']['Ranged']
-        print(len(rotations))
         if comp:
             rotations = rotations + self.data['Rotations']['ComplexWeaving'] if weaving else self.data['Rotations']['ComplexRanged']
-        print(len(rotations))
         haste_proc = 325 # dst 325
         haste_proc_uptime = 0.27 if self.character.gear.dst else 0
         self.change_stats()
