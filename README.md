@@ -127,6 +127,12 @@ At even more haste, we can let a third auto shot through between casting steadie
 
 This only ever appears for survival hunters without the 20% haste out of the BM talent tree.
 
+#### The short French rotation (5:4:1:1), alternative
+
+![sv_french_alt](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/sv_french_alt.png)
+
+This is an alternative for survival hunters where the Arcane shot is moved to an earlier auto shot cycle. This slightly reduces the duration of the full rotation, increasing DPS - but it also increases the risk of clipping the fourth auto shot.
+
 #### The French rotation (5:5:1:1)
 
 ![bm_french](img/bm_french.png)
@@ -246,6 +252,8 @@ With this caveat, stat weights can be calculated for the sets shown here.
 ### Acknowledgement
 
 This overview would have been impossible to complete without others, especially on the [Classic & TBC Hunter Discord](https://discord.gg/8TVHxRr). In no particular order, thanks go out to Aegeagh, Chitzen, Kanja for inventing the French rotation, Tragnar, BradBlondeBeard, Veramos for gear choices, Ocisly for pushing survival, Wdwune for contributing to the code, Antiserum for discussing weaving rotations, Sixx for weaving, and Bouk who has gone missing recently. This applies to this guide and the library as well.
+
+New credits to TPhoenix and Rave Magnus for finding the alternative short French rotation.
 
 ### Resources
 
