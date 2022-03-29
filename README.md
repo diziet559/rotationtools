@@ -129,7 +129,7 @@ This only ever appears for survival hunters without the 20% haste out of the BM 
 
 #### The short French rotation (5:4:1:1), alternative
 
-![sv_french_alt](C:/Users/nanoh/Documents/diziet559.github.io/rotations/img/sv_french_alt.png)
+![sv_french_alt](img/sv_french_alt.png)
 
 This is an alternative for survival hunters where the Arcane shot is moved to an earlier auto shot cycle. This slightly reduces the duration of the full rotation, increasing DPS - but it also increases the risk of clipping the fourth auto shot.
 
